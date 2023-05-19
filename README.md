@@ -1,6 +1,3 @@
-Certainly! Here's a sample description for the "SynapseStudy" project's GitHub repository:
-
----
 
 ## SynapseStudy
 
