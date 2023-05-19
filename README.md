@@ -28,9 +28,9 @@ SynapseStudy is a collaborative online learning platform that brings students to
 To get started with SynapseStudy, follow the instructions below:
 
 1. Clone the repository: `git clone https://github.com/g1mishra/SynapseStudy.git`
-2. Install the dependencies: `npm install`
+2. Install the dependencies: `pnpm install`
 3. Configure the Appwrite endpoint and project details in the necessary files.
-4. Run the development server: `npm run dev`
+4. Run the development server: `pnpm run dev`
 5. Access the application in your browser at `http://localhost:3000`
 
 <!-- ### Contribution Guidelines
