@@ -1,6 +1,10 @@
 import Link from "next/link";
+// async function getData() {
+//   console.log("Getting data", client.headers);
+// }
 
-export default function Home() {
+export default async function Page() {
+  // const data = await getData();
   return (
     <main className="hero min-h-[calc(100vh-80px)] bg-base-200">
       <div className="hero-content text-center">
