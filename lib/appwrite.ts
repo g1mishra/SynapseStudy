@@ -23,4 +23,6 @@ const appwriteSDK: AppwriteSDK = {
   },
 };
 
-export default appwriteSDK.provider();
+const appwriteSDKProvider = appwriteSDK.provider();
+
+export default appwriteSDKProvider
