@@ -1,5 +1,6 @@
 "use client";
 
+import { loginUser } from "@/lib/auth";
 import { useState } from "react";
 
 export default function LoginForm() {
@@ -9,15 +10,14 @@ export default function LoginForm() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const res = await fetch("/api/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
-    if (res.status === 200) {
-      window.location.href = "/dashboard";
-    } else {
-      setError("Incorrect email or password. Please try again.");
+    try {
+      const res = await loginUser(email, password);
+      if (res?.error) {
+        setError(res.error);
+      }
+      console.log(res);
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -40,6 +40,7 @@ export default function LoginForm() {
               type="text"
               placeholder="email"
               className="input input-bordered"
+              required
               onChange={(e) => setEmail(e.target.value)}
               value={email}
             />
@@ -52,6 +53,7 @@ export default function LoginForm() {
               type="password"
               placeholder="password"
               className="input input-bordered"
+              required
               onChange={(e) => setPassword(e.target.value)}
               value={password}
             />

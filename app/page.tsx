@@ -1,6 +1,12 @@
+// import { getCurrentUser } from "@/lib/auth";
 import Link from "next/link";
 // async function getData() {
-//   console.log("Getting data", client.headers);
+//   try {
+//     const user = await getCurrentUser();
+//     console.log("Getting data", user);
+//   } catch (err) {
+//     console.log(err);
+//   }
 // }
 
 export default async function Page() {
