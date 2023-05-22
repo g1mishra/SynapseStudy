@@ -31,7 +31,6 @@ const Header: React.FC = () => {
                 target="_blank"
               >
                 <svg
-                  fill="#ffffff"
                   height="24"
                   width="24"
                   viewBox="0 0 24 24"
