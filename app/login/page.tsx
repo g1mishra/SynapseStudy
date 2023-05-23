@@ -1,16 +1,18 @@
 "use client";
 
-import { useAuth } from "@/hooks/useAuth";
-import LoginForm from "./LoginForm";
-import { useRouter } from "next/navigation";
 import Loading from "@/components/Loading";
+import { useAuth } from "@/hooks/useAuth";
+import { useRouter } from "next/navigation";
+import LoginForm from "./LoginForm";
 
 export default function Login() {
   const router = useRouter();
-  const user = useAuth();
+  const { currentUser, loading } = useAuth();
 
-  if (user) {
+  if (loading) return <Loading />;
+  if (currentUser && !loading) {
     router.push("/dashboard");
+    return null;
   }
 
   return (

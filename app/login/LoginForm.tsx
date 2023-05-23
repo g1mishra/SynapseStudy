@@ -3,6 +3,7 @@
 import { loginUser, registerUser } from "@/lib/auth";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { mutate } from "swr";
 
 interface UserInputI {
   email: string;
@@ -23,6 +24,9 @@ export default function LoginForm() {
         setError(res.error);
       }
       router.push("/dashboard");
+      mutate("/api/auth");
+      console.log(res);
+      
     } catch (err) {
       console.log(err);
     }
