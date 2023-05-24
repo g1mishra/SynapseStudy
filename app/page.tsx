@@ -1,6 +1,16 @@
+// import { getCurrentUser } from "@/lib/auth";
 import Link from "next/link";
+// async function getData() {
+//   try {
+//     const user = await getCurrentUser();
+//     console.log("Getting data", user);
+//   } catch (err) {
+//     console.log(err);
+//   }
+// }
 
-export default function Home() {
+export default async function Page() {
+  // const data = await getData();
   return (
     <main className="hero min-h-[calc(100vh-80px)] bg-base-200">
       <div className="hero-content text-center">

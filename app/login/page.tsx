@@ -1,6 +1,20 @@
-import LoginForm from "./Form";
+"use client";
+
+import Loading from "@/components/Loading";
+import { useAuth } from "@/hooks/useAuth";
+import { useRouter } from "next/navigation";
+import LoginForm from "./LoginForm";
 
 export default function Login() {
+  const router = useRouter();
+  const { currentUser, loading } = useAuth();
+
+  if (loading) return <Loading />;
+  if (currentUser && !loading) {
+    router.push("/dashboard");
+    return null;
+  }
+
   return (
     <main className="hero min-h-[calc(100vh-80px)] bg-base-200 py-4">
       <div className="hero-content container justify-evenly flex-col sm:flex-row">
