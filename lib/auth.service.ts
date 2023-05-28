@@ -3,7 +3,6 @@ import appwriteSDKProvider from "./appwrite";
 
 const { account } = appwriteSDKProvider;
 
-
 export function registerUser(email: string, password: string, name: string): Promise<any> {
   return account.create(ID.unique(), email, password, name);
 }
