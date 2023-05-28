@@ -1,7 +1,7 @@
 "use client";
 import Loading from "@/components/Loading";
 import { useAuth } from "@/hooks/useAuth";
-import { logoutUser } from "@/lib/auth";
+import { logoutUser } from "@/lib/auth.service";
 import { useRouter } from "next/navigation";
 import { mutate } from "swr";
 

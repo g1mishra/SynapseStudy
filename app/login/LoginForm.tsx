@@ -1,6 +1,6 @@
 "use client";
 
-import { loginUser, registerUser } from "@/lib/auth";
+import { loginUser, registerUser } from "@/lib/auth.service";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { mutate } from "swr";
