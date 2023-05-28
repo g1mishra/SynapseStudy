@@ -10,6 +10,11 @@ const Header: React.FC = () => {
           </Link>
           <ul className="flex space-x-4">
             <li>
+              <Link href="/study-rooms" className="btn btn-ghost">
+                Study Rooms
+              </Link>
+            </li>
+            <li>
               <Link href="/about" className="btn btn-ghost">
                 About
               </Link>
