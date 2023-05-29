@@ -1,5 +1,5 @@
 import { Server } from "@/utils/config";
-import appwriteSDKProvider from "./appwrite";
+import appwriteSDKProvider from "./appwrite.client";
 import { Query } from "appwrite";
 
 const studyRoomsCollectionID = "646dcbc3c72be67e1267";
