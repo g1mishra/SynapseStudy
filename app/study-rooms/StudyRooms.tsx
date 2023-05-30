@@ -3,6 +3,12 @@ import { useAuth } from "@/hooks/useAuth";
 import useSwr from "swr";
 import StudyRoomList from "./StudyRoomList";
 import RoomListLoader from "./RoomListLoader";
+import {
+  getUnjoinedStudyRooms,
+  getUserJoinedStudyRooms,
+} from "@/lib/studyrooms.service";
+import { Models } from "appwrite";
+import { StudyRoomModel } from "@/types/study-room";
 
 export default function StudyRooms({
   handleRoomClick,
@@ -11,13 +17,45 @@ export default function StudyRooms({
 }) {
   const { currentUser, loading } = useAuth();
 
+  // const {
+  //   data: joinedStudyRooms,
+  //   error: error1,
+  //   isLoading: loading1,
+  // } = useSwr(
+  //   currentUser ? `/api/study-group/joined?user_id=${currentUser.$id}` : null,
+  //   (url) => fetch(url).then((res) => res.json()),
+  //   {
+  //     onError: (error: any) => {
+  //       console.error("Failed to fetch chat rooms:", error);
+  //     },
+  //     revalidateOnFocus: false,
+  //     shouldRetryOnError: false,
+  //   }
+  // );
+
+  // const {
+  //   data: unjoinedStudyRooms,
+  //   error: error2,
+  //   isLoading: loading2,
+  // } = useSwr(
+  //   currentUser ? `/api/study-group/unjoined?user_id=${currentUser.$id}` : null,
+  //   (url) => fetch(url).then((res) => res.json()),
+  //   {
+  //     onError: (error: any) => {
+  //       console.error("Failed to fetch chat rooms:", error);
+  //     },
+  //     revalidateOnFocus: false,
+  //     shouldRetryOnError: false,
+  //   }
+  // );
+
   const {
     data: joinedStudyRooms,
     error: error1,
     isLoading: loading1,
-  } = useSwr(
-    currentUser ? `/api/study-group/joined?user_id=${currentUser.$id}` : null,
-    (url) => fetch(url).then((res) => res.json()),
+  } = useSwr<Models.DocumentList<StudyRoomModel>>(
+    currentUser ? [`/joined-study-rooms`, currentUser.$id] : null,
+    getUserJoinedStudyRooms,
     {
       onError: (error: any) => {
         console.error("Failed to fetch chat rooms:", error);
@@ -31,9 +69,9 @@ export default function StudyRooms({
     data: unjoinedStudyRooms,
     error: error2,
     isLoading: loading2,
-  } = useSwr(
-    currentUser ? `/api/study-group/unjoined?user_id=${currentUser.$id}` : null,
-    (url) => fetch(url).then((res) => res.json()),
+  } = useSwr<Models.DocumentList<StudyRoomModel>>(
+    currentUser ? [`/unjoined-study-rooms`, currentUser.$id] : null,
+    getUnjoinedStudyRooms,
     {
       onError: (error: any) => {
         console.error("Failed to fetch chat rooms:", error);
@@ -43,39 +81,27 @@ export default function StudyRooms({
     }
   );
 
-  // const {
-  //   data: joinedStudyRooms,
-  //   error: error1,
-  //   isLoading: loading1,
-  // } = useSwr(
-  //   currentUser ? [`/joined-study-rooms`, currentUser.$id] : null,
-  //   getUserJoinedStudyRooms,
-  //   {
-  //     onError: (error: any) => {
-  //       console.error("Failed to fetch chat rooms:", error);
-  //     },
-  //     revalidateOnFocus: false,
-  //     shouldRetryOnError: false,
-  //   }
-  // );
-
   if (loading) return <RoomListLoader />;
 
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-4">
-        <h1 className="text-xl font-bold text-white mt-4 px-2">Joined Study Rooms</h1>
+        <h1 className="text-xl font-bold text-white mt-4 px-2">
+          Joined Study Rooms
+        </h1>
         <StudyRoomList
-          studyRooms={joinedStudyRooms?.data || null}
+          studyRooms={joinedStudyRooms?.documents || null}
           loading={loading1}
           error={error1}
           handleRoomClick={handleRoomClick}
         />
       </div>
       <div className="flex flex-col gap-4">
-        <h1 className="text-xl font-bold text-white mt-4 px-2">Unjoined Study Rooms</h1>
+        <h1 className="text-xl font-bold text-white mt-4 px-2">
+          Unjoined Study Rooms
+        </h1>
         <StudyRoomList
-          studyRooms={unjoinedStudyRooms?.data || null}
+          studyRooms={unjoinedStudyRooms?.documents || null}
           loading={loading2}
           error={error2}
           handleRoomClick={handleRoomClick}
