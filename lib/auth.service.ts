@@ -1,5 +1,5 @@
 import { ID } from "appwrite";
-import appwriteSDKProvider from "./appwrite";
+import appwriteSDKProvider from "./appwrite.client";
 
 const { account } = appwriteSDKProvider;
 

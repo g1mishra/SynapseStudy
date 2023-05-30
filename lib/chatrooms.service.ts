@@ -1,5 +1,5 @@
 import { Server } from "@/utils/config";
-import appwriteSDKProvider from "./appwrite";
+import appwriteSDKProvider from "./appwrite.client";
 
 const { database } = appwriteSDKProvider;
 

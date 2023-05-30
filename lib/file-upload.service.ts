@@ -1,5 +1,5 @@
 import { ID } from "appwrite";
-import appwriteSDKProvider from "./appwrite";
+import appwriteSDKProvider from "./appwrite.client";
 
 const { storage } = appwriteSDKProvider;
 const bucketId = "647317f524fbb9334d1b";
