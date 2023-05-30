@@ -3,13 +3,18 @@ import { cn } from "@/utils/utils";
 import RoomListLoader from "./RoomListLoader";
 
 interface StudyRoomListProps {
-  studyRooms: StudyRoomModel[];
+  studyRooms: StudyRoomModel[] | null;
   loading: boolean;
   error: any;
   handleRoomClick: (room: string) => void;
 }
 
-function StudyRoomList({ studyRooms, loading, error, handleRoomClick }: StudyRoomListProps) {
+function StudyRoomList({
+  studyRooms,
+  loading,
+  error,
+  handleRoomClick,
+}: StudyRoomListProps) {
   if (loading) return <RoomListLoader />;
 
   if (error) {
@@ -48,7 +53,11 @@ function StudyRoomList({ studyRooms, loading, error, handleRoomClick }: StudyRoo
           onClick={() => handleRoomClick(room.name)}
         >
           <div className="flex items-center gap-4">
-            <img src={room.image_url} alt="Room" className="w-12 h-12 rounded-full" />
+            <img
+              src={room.image_url}
+              alt="Room"
+              className="w-12 h-12 rounded-full"
+            />
             <div className="flex flex-col">
               <span className="text-lg font-bold">{room.name}</span>
               <span className="text-sm">{room.subject}</span>
