@@ -3,18 +3,11 @@ import { useAuth } from "@/hooks/useAuth";
 import useSwr from "swr";
 import StudyRoomList from "./StudyRoomList";
 import RoomListLoader from "./RoomListLoader";
-import {
-  getUnjoinedStudyRooms,
-  getUserJoinedStudyRooms,
-} from "@/lib/studyrooms.service";
+import { getUnjoinedStudyRooms, getUserJoinedStudyRooms } from "@/lib/studyrooms.service";
 import { Models } from "appwrite";
 import { StudyRoomModel } from "@/types/study-room";
 
-export default function StudyRooms({
-  handleRoomClick,
-}: {
-  handleRoomClick: (room: string) => void;
-}) {
+export default function StudyRooms() {
   const { currentUser, loading } = useAuth();
 
   // const {
@@ -86,25 +79,19 @@ export default function StudyRooms({
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-4">
-        <h1 className="text-xl font-bold text-white mt-4 px-2">
-          Joined Study Rooms
-        </h1>
+        <h1 className="text-xl font-bold text-white mt-4 px-2">Joined Study Rooms</h1>
         <StudyRoomList
           studyRooms={joinedStudyRooms?.documents || null}
           loading={loading1}
           error={error1}
-          handleRoomClick={handleRoomClick}
         />
       </div>
       <div className="flex flex-col gap-4">
-        <h1 className="text-xl font-bold text-white mt-4 px-2">
-          Unjoined Study Rooms
-        </h1>
+        <h1 className="text-xl font-bold text-white mt-4 px-2">Unjoined Study Rooms</h1>
         <StudyRoomList
           studyRooms={unjoinedStudyRooms?.documents || null}
           loading={loading2}
           error={error2}
-          handleRoomClick={handleRoomClick}
         />
       </div>
     </div>
