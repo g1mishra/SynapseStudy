@@ -1,9 +1,9 @@
 "use client";
 
-import { loginUser, registerUser } from "@/lib/auth.service";
+import { useAuth } from "@/hooks/useAuth";
+import { registerUser } from "@/lib/auth.service";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { mutate } from "swr";
 
 interface UserInputI {
   email: string;
@@ -16,17 +16,12 @@ export default function LoginForm() {
   const [variant, setVariant] = useState("login");
   const [error, setError] = useState("");
 
+  const { login } = useAuth();
+
   const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>, user: UserInputI) => {
     e.preventDefault();
     try {
-      const res = await loginUser(user.email, user.password);
-      if (res?.error) {
-        setError(res.error);
-      }
-      router.push("/dashboard");
-      mutate("/api/auth");
-      console.log(res);
-      
+      await login(user.email, user.password);
     } catch (err) {
       console.log(err);
     }
