@@ -8,8 +8,6 @@ export function registerUser(email: string, password: string, name: string): Pro
 }
 
 export function loginUser(email: string, password: string): Promise<any> {
-  console.log(email, password);
-
   return account.createEmailSession(email, password);
 }
 

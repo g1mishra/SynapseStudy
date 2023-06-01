@@ -1,4 +1,4 @@
-import Link from "next/link";
+import CTAButton from "@/components/CTAButton";
 // async function getData() {
 //   try {
 //     const user = await getCurrentUser();
@@ -16,9 +16,7 @@ export default async function Page() {
         <div className="max-w-screen-md">
           <h1 className="text-5xl font-bold">SynapseStudy</h1>
           <p className="py-6">Collaborative online learning platform for virtual study groups</p>
-          <Link href="/login" className="btn">
-            Get Started
-          </Link>
+          <CTAButton />
         </div>
       </div>
     </main>
