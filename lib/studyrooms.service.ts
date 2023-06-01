@@ -3,8 +3,8 @@ import { Server } from "@/utils/config";
 import { ID, Models, Permission, Query, Role } from "appwrite";
 import appwriteSDKProvider from "./appwrite.client";
 
-const studyRoomsCollectionID = "646dcbc3c72be67e1267";
-const userLinksCollectionID = "646dcbd31368a4a94979";
+const studyRoomsCollectionID = Server.roomsCollectionId;
+const userLinksCollectionID = Server.userLinksCollectionId;
 
 /* 
   Rules for defining functions
