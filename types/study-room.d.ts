@@ -21,3 +21,12 @@ interface UserLinksI {
 export interface UserLinksModel extends Models.Document, UserLinksI {
   $id: string;
 }
+
+export interface ChannelI {
+  name: string;
+  study_room_id: string;
+}
+
+export interface ChannelModel extends Models.Document, ChannelI {
+  $id: string;
+}

@@ -1,3 +1,5 @@
+import StudyRooms from "../../components/StudyRooms";
+
 const StudyRoom = () => {
   return (
     <>
@@ -7,6 +9,9 @@ const StudyRoom = () => {
           This is a study room. You can create a study room and invite your friends to join you. You
           can also join a study room created by your friends.
         </p>
+        <div className="mt-8 max-w-screen-md w-full">
+          <StudyRooms />
+        </div>
       </div>
     </>
   );
