@@ -9,17 +9,15 @@ import StudyRoomList from "./StudyRoomList";
 export default function StudyRooms() {
   const { currentUser, loading: authLoader } = useAuth();
 
-  const { data, error, isLoading } = useSwr<GetStudyRoomsResponse>(
-    currentUser ? [`/study-rooms`, currentUser.$id] : null,
-    getAllStudyRooms,
-    {
-      onError: (error: any) => {
-        console.error("Failed to fetch chat rooms:", error);
-      },
-      revalidateOnFocus: false,
-      shouldRetryOnError: false,
-    }
-  );
+  const key = currentUser ? [`/study-rooms`, currentUser.$id] : null;
+
+  const { data, error, isLoading } = useSwr(key, async ([_, uid]) => await getAllStudyRooms(uid), {
+    onError: (error: any) => {
+      console.error("Failed to fetch chat rooms:", error);
+    },
+    revalidateOnFocus: false,
+    shouldRetryOnError: false,
+  });
 
   const loading = authLoader || isLoading;
 

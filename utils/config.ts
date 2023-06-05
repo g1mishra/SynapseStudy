@@ -7,6 +7,7 @@ export const Server = {
   roomsCollectionId: process.env.NEXT_PUBLIC_ROOMS_COLLECTION_ID ?? "",
   userLinksCollectionId: process.env.NEXT_PUBLIC_USERS_COLLECTION_ID ?? "",
   channelsCollectionId: process.env.NEXT_PUBLIC_CHANNEL_COLLECTION_ID ?? "",
+  messagesCollectionId: process.env.NEXT_PUBLIC_MESSAGES_COLLECTION_ID ?? "",
 
   // secret keys
   documentReadKey: process.env.APPWRITE_DOCUMENT_READ_KEY ?? "",
