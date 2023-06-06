@@ -15,19 +15,17 @@ interface StudyRoomPageProps {
 
 export default function Page({ params: { id: studyRoomId } }: StudyRoomPageProps) {
   // to check if the user is authorized to view the study room
-  const {} = useAuth();
+  const { currentUser } = useAuth();
 
-  const { data, isLoading, error } = useSWR(
-    [`/study-room/${studyRoomId}`, studyRoomId],
-    getStudyRoomById,
-    {
-      onError: (error: any) => {
-        console.error("Failed to fetch chat rooms:", error);
-      },
-      revalidateOnFocus: false,
-      shouldRetryOnError: false,
-    }
-  );
+  const key = studyRoomId ? [`/study-room/${studyRoomId}`, studyRoomId] : null;
+
+  const { data, isLoading, error } = useSWR(key, async ([_, id]) => await getStudyRoomById(id), {
+    onError: (error: any) => {
+      console.error("Failed to fetch chat rooms:", error);
+    },
+    revalidateOnFocus: false,
+    shouldRetryOnError: false,
+  });
 
   if (error) {
     return <div>Failed to load study room</div>;

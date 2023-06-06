@@ -5,6 +5,7 @@ interface AppwriteClient {
   account: Account;
   database: Databases;
   storage?: Storage;
+  client: Appwrite;
 }
 
 interface AppwriteSDK {
@@ -25,7 +26,7 @@ const appwriteSDK: AppwriteSDK = {
     const database = new Databases(appwrite);
     const storage = new Storage(appwrite);
 
-    appwriteSDK.sdk = { account, database, storage };
+    appwriteSDK.sdk = { client: appwrite, account, database, storage };
     return appwriteSDK.sdk;
   },
 };
