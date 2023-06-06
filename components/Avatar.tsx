@@ -19,7 +19,7 @@ export default function Avatar(props: AvatarProps) {
   return (
     <div className="relative">
       <Image
-        src={props?.imageSrc ?? "/images/profile.png"}
+        src={props?.imageSrc || "/placeholder.png"}
         className={cn("w-12 h-12 rounded-full mr-4", {
           hidden: imageError,
         })}

@@ -1,6 +1,10 @@
 "use client";
 
+import { useAuth } from "@/hooks/useAuth";
+import { createChatDocument } from "@/lib/chatrooms.service";
+import { ChatMessage } from "@/types/chat";
 import { useCallback, useState } from "react";
+import { KeyedMutator } from "swr";
 
 interface ChatRoomInputProps {
   chatRoomId: string;
@@ -9,21 +13,27 @@ interface ChatRoomInputProps {
 export default function ChatRoomInput(props: ChatRoomInputProps) {
   const { chatRoomId } = props;
   const [message, setMessage] = useState("");
-  //   const [sendMessage] = useSendMessageMutation();
+  const { currentUser } = useAuth();
 
   const handleSendMessage = useCallback(
-    (e: React.FormEvent<HTMLFormElement>) => {
+    async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      //   sendMessage({
-      //     variables: {
-      //       chatRoomId,
-      //       message,
-      //     },
-      //   });
+      const sender = JSON.stringify({
+        $id: currentUser?.$id,
+        name: currentUser?.name,
+        image: currentUser?.image,
+      });
+      await createChatDocument({
+        content: message,
+        channel_Id: chatRoomId,
+        message_type: "text",
+        sender,
+        senderId: currentUser?.$id,
+        status: "sent",
+      });
       setMessage("");
     },
     [chatRoomId, message]
-    // [chatRoomId, message, sendMessage]
   );
 
   return (

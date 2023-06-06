@@ -1,54 +1,37 @@
-import { ChatRoomView } from "@/components/Chat/ChatRoomView";
+"use client";
 
-const chatRooms = [
-  {
-    id: "647341c83675ca19faa2",
-    name: "Chat Room 1",
-    description: "This is a chat room channel",
-    messages: [
-      {
-        id: "1",
-        content: "Hello",
-        createdAt: "2021-07-22T00:00:00Z",
-        senderId: "646b3810e4dc3d0fa6eb",
-      },
-      {
-        id: "2",
-        content: "Hi",
-        createdAt: "2021-07-22T00:00:00Z",
-        senderId: "",
-      },
-    ],
-  },
-  {
-    id: "647341e869b8a9aeab17",
-    name: "Chat Room 2",
-    description: "This is a chat room channel",
-    messages: [
-      {
-        id: "3",
-        content: "Hello",
-        createdAt: "2021-07-22T00:00:00Z",
-        senderId: "646b3810e4dc3d0fa6eb",
-      },
-      {
-        id: "4",
-        content: "Hi",
-        createdAt: "2021-07-22T00:00:00Z",
-        senderId: "",
-      },
-    ],
-  },
-];
+import { getChannelInfo } from "@/lib/chatrooms.service";
+import useSwr from "swr";
+import ChannelChat from "./ChannelChat";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function ChatPage({ params }: { params: { channelId: string } }) {
   const { channelId } = params;
+  const {} = useAuth();
+  const { data, error, isLoading } = useSwr(
+    channelId ? `/chatrooms/${channelId}` : null,
+    async (_) => await getChannelInfo(channelId),
+    {
+      revalidateOnFocus: false,
+      shouldRetryOnError: false,
+    }
+  );
 
-  const chatRoom = chatRooms.find((chatRoom) => chatRoom.id === channelId);
-
-  if (!chatRoom) {
-    return <div>Chat room not found</div>;
+  if (isLoading) {
+    return (
+      <div>
+        <h1>Loading...</h1>
+      </div>
+    );
   }
 
-  return <ChatRoomView chatRoom={chatRoom} />;
+  if (error || !data?.$id) {
+    return (
+      <div>
+        <h1>Oops - this chat room doesn't exist!</h1>
+      </div>
+    );
+  }
+
+  return <ChannelChat roomInfo={data} />;
 }
