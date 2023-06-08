@@ -18,7 +18,7 @@ export interface ChatMessageI {
 
 export type ChatMessage = Models.Document &
   ChatMessageI & {
-    $id: string;
-    $createdAt: string;
-    $updatedAt: string;
+    $id?: string;
+    $createdAt?: string;
+    $updatedAt?: string;
   };

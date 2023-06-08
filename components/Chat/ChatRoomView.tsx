@@ -9,7 +9,7 @@ import ChatBubble from "./ChatBubble";
 
 interface ChatRoomViewProps {
   roomInfo: ChatChannel;
-  messages: ChatMessage[] | undefined
+  messages?: ChatMessage[] | undefined;
 }
 
 export function ChatRoomView({ roomInfo, messages }: ChatRoomViewProps) {
@@ -21,11 +21,11 @@ export function ChatRoomView({ roomInfo, messages }: ChatRoomViewProps) {
       <div className="py-4 px-6 bg-white m-2 shadow-md flex-1 overflow-y-auto">
         <h1 className="text-2xl font-semibold text-gray-800">Chat Room</h1>
         <div className="mt-4">
-          {messages?.map((message) => {
+          {messages?.map((message, index) => {
             let user = JSON.parse(message?.sender ?? "{}");
             return (
               <ChatBubble
-                key={message.$id}
+                key={`${message.$id}-${index}`}
                 content={message.content}
                 createdAt={message.$createdAt}
                 status={message.status}
@@ -38,7 +38,7 @@ export function ChatRoomView({ roomInfo, messages }: ChatRoomViewProps) {
         </div>
       </div>
       <div className="py-4 px-6 bg-white m-2 shadow-md">
-        <ChatRoomInput chatRoomId={roomInfo?.$id} />
+        <ChatRoomInput channelId={roomInfo?.$id} />
       </div>
     </div>
   );
