@@ -2,8 +2,11 @@ import { ID } from "appwrite";
 import appwriteSDKProvider from "./appwrite.client";
 
 const { storage } = appwriteSDKProvider;
-const bucketId = "647317f524fbb9334d1b";
 
-export function uploadFile(file: File) {
-  return storage?.createFile(bucketId, ID.unique(), file);
+export async function uploadFileToBucket(file: File, bucketId: string) {
+  const uploadedFile = await storage?.createFile(bucketId, ID.unique(), file);
+
+  console.log("uploadedFile", uploadedFile);
+
+  return uploadedFile;
 }

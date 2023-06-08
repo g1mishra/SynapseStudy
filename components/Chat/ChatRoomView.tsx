@@ -31,6 +31,7 @@ export function ChatRoomView({ roomInfo, messages }: ChatRoomViewProps) {
                 status={message.status}
                 senderId={currentUser.$id}
                 user={user}
+                messageType={message.message_type}
               />
             );
           })}
