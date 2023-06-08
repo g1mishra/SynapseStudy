@@ -1,10 +1,11 @@
 "use client";
 
 import { formatDate } from "@/utils/date";
-import { cn } from "@/utils/utils";
+import { bucketFilePath, cn } from "@/utils/utils";
 import Avatar from "../Avatar";
 
 interface ChatBubbleProps {
+  messageType?: string;
   content: string;
   createdAt?: string;
   status?: string;
@@ -17,8 +18,50 @@ interface ChatBubbleProps {
 }
 
 export default function ChatBubble(props: ChatBubbleProps) {
-  const { content, createdAt, status, user, senderId } = props;
+  const { messageType, content, createdAt, status, user, senderId } = props;
   const isSender = senderId === user?.$id;
+
+  const renderMessageContent = () => {
+    let messageObj = {} as { url: string; message: string; fileName: string };
+    if (messageType !== "text") {
+      messageObj = JSON.parse(content ?? "{}");
+      messageObj.url = bucketFilePath("chat-files-bucket", messageObj.url);
+    }
+    if (messageType === "text") {
+      return <div className="chat-bubble">{content}</div>;
+    } else if (messageType === "image") {
+      return (
+        <div className="chat-bubble">
+          <img src={messageObj?.url} alt="Image" className="sm:max-w-md object-contain max-h-52" />
+          <span className="mt-1 inline-block">{messageObj.message}</span>
+        </div>
+      );
+    } else if (messageType === "video") {
+      return (
+        <div className="chat-bubble">
+          <video src={messageObj?.url} controls className="sm:max-w-md aspect-video" />
+          <span className="mt-1 inline-block">{messageObj.message}</span>
+        </div>
+      );
+    } else if (messageType === "audio") {
+      return (
+        <div className="chat-bubble">
+          <audio src={messageObj?.url} controls className="chat-audio" />
+          <span className="mt-1 inline-block">{messageObj.message}</span>
+        </div>
+      );
+    } else if (messageType === "file") {
+      return (
+        <div className="chat-bubble">
+          <a className="rounded" href={content} target="_blank" rel="noopener noreferrer">
+            {messageObj?.fileName}
+          </a>
+        </div>
+      );
+    } else {
+      return null;
+    }
+  };
 
   return (
     <div
@@ -37,7 +80,7 @@ export default function ChatBubble(props: ChatBubbleProps) {
         <span className="mr-1">{user?.name}</span>
         <time className="text-xs opacity-50">{formatDate(createdAt as string)}</time>
       </div>
-      <div className="chat-bubble">{content}</div>
+      {renderMessageContent()}
       <div
         className={cn("chat-footer opacity-50", {
           hidden: !isSender,
