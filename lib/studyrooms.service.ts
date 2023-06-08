@@ -130,7 +130,11 @@ export async function createStudyRoom(
       image_url: image_url,
       subject,
     },
-    [Permission.delete(Role.user(userId)), Permission.update(Role.user(userId))]
+    [
+      Permission.read(Role.any()),
+      Permission.delete(Role.user(userId)),
+      Permission.update(Role.user(userId)),
+    ]
   );
 
   await joinStudyRoom({ study_room_id: studyRoom.$id, user_id: userId, role: "owner" });
