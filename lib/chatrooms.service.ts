@@ -25,15 +25,27 @@ export async function getChatMessagesByChannelId(channelId: string) {
   return documents;
 }
 
-export async function createChatDocument(payload: ChatMessageI & { senderId: string }) {
+export async function createChatDocument(
+  payload: ChatMessageI & { senderId: string },
+  uniqueId = ID.unique()
+) {
   const { senderId, ...rest } = payload;
   return await database.createDocument<ChatMessage>(
     Server.dbId,
     Server.messagesCollectionId,
-    ID.unique(),
+    uniqueId,
     {
       ...rest,
     },
     [Permission.write(Role.user(senderId)), Permission.read(Role.any())]
+  );
+}
+
+export async function updateChatDocument(payload: Partial<ChatMessageI>, uniqueId: string) {
+  return await database.updateDocument<ChatMessage>(
+    Server.dbId,
+    Server.messagesCollectionId,
+    uniqueId,
+    payload
   );
 }

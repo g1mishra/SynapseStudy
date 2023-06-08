@@ -7,7 +7,18 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const bucketFilePath = (bucketId: string, fileId: string) => {
-  // https://cloud.appwrite.io/v1/storage/buckets/chat-files-bucket/files/648161f32e3bd2c0d146/view?project=646913b8565dcc7921b7
-
   return `https://cloud.appwrite.io/v1/storage/buckets/${bucketId}/files/${fileId}/view?project=${Server.project}`;
+};
+
+export const getFileType = (file: File) => {
+  const fileType = file.type.split("/")[0];
+  if (fileType === "image") {
+    return "image";
+  } else if (fileType === "video") {
+    return "video";
+  } else if (fileType === "audio") {
+    return "audio";
+  } else {
+    return "file";
+  }
 };

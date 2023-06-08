@@ -1,7 +1,9 @@
 "use client";
 
+import { useProgressBar } from "@/hooks/useProgressBar";
 import { formatDate } from "@/utils/date";
 import { bucketFilePath, cn } from "@/utils/utils";
+import { UploadProgress } from "appwrite";
 import Avatar from "../Avatar";
 
 interface ChatBubbleProps {
@@ -18,7 +20,7 @@ interface ChatBubbleProps {
 }
 
 export default function ChatBubble(props: ChatBubbleProps) {
-  const { messageType, content, createdAt, status, user, senderId } = props;
+  const { messageType, content, createdAt, status = "", user, senderId } = props;
   const isSender = senderId === user?.$id;
 
   const renderMessageContent = () => {
@@ -31,28 +33,48 @@ export default function ChatBubble(props: ChatBubbleProps) {
       return <div className="chat-bubble">{content}</div>;
     } else if (messageType === "image") {
       return (
-        <div className="chat-bubble">
+        <div
+          className={cn("chat-bubble relative", {
+            "min-h-[100px] min-w-[150px]": status === "sending",
+          })}
+        >
+          <RadialProgress status={status} />
           <img src={messageObj?.url} alt="Image" className="sm:max-w-md object-contain max-h-52" />
           <span className="mt-1 inline-block">{messageObj.message}</span>
         </div>
       );
     } else if (messageType === "video") {
       return (
-        <div className="chat-bubble">
+        <div
+          className={cn("chat-bubble relative", {
+            "min-h-[100px] min-w-[150px]": status === "sending",
+          })}
+        >
+          <RadialProgress status={status} />
           <video src={messageObj?.url} controls className="sm:max-w-md aspect-video" />
           <span className="mt-1 inline-block">{messageObj.message}</span>
         </div>
       );
     } else if (messageType === "audio") {
       return (
-        <div className="chat-bubble">
+        <div
+          className={cn("chat-bubble relative", {
+            "min-h-[100px] min-w-[150px]": status === "sending",
+          })}
+        >
+          <RadialProgress status={status} />
           <audio src={messageObj?.url} controls className="chat-audio" />
           <span className="mt-1 inline-block">{messageObj.message}</span>
         </div>
       );
     } else if (messageType === "file") {
       return (
-        <div className="chat-bubble">
+        <div
+          className={cn("chat-bubble relative", {
+            "min-h-[100px] min-w-[150px]": status === "sending",
+          })}
+        >
+          <RadialProgress status={status} />
           <a className="rounded" href={content} target="_blank" rel="noopener noreferrer">
             {messageObj?.fileName}
           </a>
@@ -91,3 +113,24 @@ export default function ChatBubble(props: ChatBubbleProps) {
     </div>
   );
 }
+
+const RadialProgress = ({ status }: { status: string }) => {
+  const { progress } = useProgressBar<UploadProgress>("chat-sending");
+  const progressValue = Math.ceil(progress?.progress ?? 0);
+  const radialProgressStyle: any = {
+    "--value": `${progressValue}`,
+  };
+
+  if (status !== "sending") return null;
+
+  return (
+    <div className="z-10 absolute inset-x-0 inset-y-1 flex items-center justify-center bg-slate-200 bg-opacity-50">
+      <div
+        className="radial-progress bg-primary text-primary-content border-4 border-primary"
+        style={radialProgressStyle}
+      >
+        {progressValue}%
+      </div>
+    </div>
+  );
+};
