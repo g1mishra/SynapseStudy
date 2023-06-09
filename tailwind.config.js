@@ -18,6 +18,12 @@ module.exports = {
           secondary: "#242438",
           tertiary: "#20202D",
         },
+        // #72747D
+        gray: {
+          primary: "#72747D",
+          secondary: "#A0A3B1",
+          tertiary: "#D1D2D9",
+        },
       },
     },
   },
