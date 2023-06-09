@@ -1,9 +1,23 @@
-import { ID } from "appwrite";
+import { ID, Permission, UploadProgress, Role } from "appwrite";
 import appwriteSDKProvider from "./appwrite.client";
 
 const { storage } = appwriteSDKProvider;
-const bucketId = "647317f524fbb9334d1b";
 
-export function uploadFile(file: File) {
-  return storage?.createFile(bucketId, ID.unique(), file);
+export async function uploadFileToBucket(
+  senderId: string,
+  file: File,
+  bucketId: string,
+  onProgress?: (progress: UploadProgress) => void
+) {
+  const uploadedFile = await storage?.createFile(
+    bucketId,
+    ID.unique(),
+    file,
+    [Permission.write(Role.user(senderId)), Permission.read(Role.any())],
+    onProgress
+  );
+
+  // console.log("uploadedFile", uploadedFile);
+
+  return uploadedFile;
 }

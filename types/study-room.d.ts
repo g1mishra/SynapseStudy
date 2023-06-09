@@ -1,10 +1,9 @@
 import { Models } from "node-appwrite";
 
-
 export interface StudyRoomI {
   name: string;
   description: string;
-  image_url: string;
+  image_url?: string;
   subject: string;
 }
 
@@ -15,7 +14,7 @@ export interface StudyRoomModel extends Models.Document, StudyRoomI {
 interface UserLinksI {
   user_id: string;
   study_room_id: string;
-  role: 'owner' | 'admin' | 'user';
+  role: "owner" | "admin" | "user";
 }
 
 export interface UserLinksModel extends Models.Document, UserLinksI {

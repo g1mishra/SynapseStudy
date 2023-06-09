@@ -2,24 +2,25 @@
 import { useAuth } from "@/hooks/useAuth";
 import { GetStudyRoomsResponse, getAllStudyRooms } from "@/lib/studyrooms.service";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
+import { useState } from "react";
 import useSwr from "swr";
+import CreateStudyRoomModal from "./Modal/CreateStudyRoomModal";
 import RoomListLoader from "./RoomListLoader";
 import StudyRoomList from "./StudyRoomList";
 
 export default function StudyRooms() {
   const { currentUser, loading: authLoader } = useAuth();
+  const [openStudyRoomModal, setOpenStudyRoomModal] = useState(false);
 
-  const { data, error, isLoading } = useSwr<GetStudyRoomsResponse>(
-    currentUser ? [`/study-rooms`, currentUser.$id] : null,
-    getAllStudyRooms,
-    {
-      onError: (error: any) => {
-        console.error("Failed to fetch chat rooms:", error);
-      },
-      revalidateOnFocus: false,
-      shouldRetryOnError: false,
-    }
-  );
+  const key = currentUser ? [`/study-rooms`, currentUser.$id] : null;
+
+  const { data, error, isLoading } = useSwr(key, async ([_, uid]) => await getAllStudyRooms(uid), {
+    onError: (error: any) => {
+      console.error("Failed to fetch chat rooms:", error);
+    },
+    revalidateOnFocus: false,
+    shouldRetryOnError: false,
+  });
 
   const loading = authLoader || isLoading;
 
@@ -27,10 +28,20 @@ export default function StudyRooms() {
     <>
       <div className="flex flex-col gap-4 mb-10 items-center">
         <h1 className="text-xl font-bold mt-4 px-2">Study Rooms</h1>
-        <button className=" bg-indigo-500 hover:bg-indigo-600 text-white text-xl font-bold p-4 rounded-md transition-colors duration-300 flex gap-4 items-center justify-between">
+        <button
+          onClick={() => setOpenStudyRoomModal(true)}
+          className=" bg-indigo-500 hover:bg-indigo-600 text-white text-xl font-bold p-4 rounded-md transition-colors duration-300 flex gap-4 items-center justify-between"
+        >
           <strong>Create Room</strong> <PlusCircleIcon className="w-6 h-6 text-indigo-50" />
         </button>
       </div>
+      <CreateStudyRoomModal
+        open={openStudyRoomModal}
+        onClose={() => setOpenStudyRoomModal(false)}
+        onCreateChatRoom={(studyRoom) => {
+          console.log(studyRoom);
+        }}
+      />
       {renderComponet(loading, data)}
     </>
   );

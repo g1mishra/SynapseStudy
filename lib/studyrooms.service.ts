@@ -12,26 +12,18 @@ import appwriteSDKProvider from "./appwrite.client";
 const studyRoomsCollectionID = Server.roomsCollectionId;
 const userLinksCollectionID = Server.userLinksCollectionId;
 
-/* 
-  Rules for defining functions
-  
-  1.) only get functions will be defined with array of params including url and query params. 
-  Because these functions will be used with useSWR and useSWR will pass url and query params as array
-  
-  2.) other functions will be defined with payload as params
-
-*/
-
 export interface GetStudyRoomsResponse {
   joinedStudyRooms: StudyRoomModel[];
   restStudyRooms: StudyRoomModel[];
   total: number;
 }
 
-export async function getAllStudyRooms([_url, userId]: [
-  string,
-  string
-]): Promise<GetStudyRoomsResponse> {
+export interface GetStudyRoomResponse extends StudyRoomModel {
+  // userLinks: UserLinksModel[];
+  channels: ChannelModel[];
+}
+
+export async function getAllStudyRooms(userId: string): Promise<GetStudyRoomsResponse> {
   try {
     const userLinks = await appwriteSDKProvider.database.listDocuments(
       Server.dbId,
@@ -66,12 +58,7 @@ export async function getAllStudyRooms([_url, userId]: [
   }
 }
 
-export async function getStudyRoomById([_url, studyRoomId]: [string, string]): Promise<
-  StudyRoomModel & {
-    // userLinks: UserLinksModel[];
-    channels: ChannelModel[];
-  }
-> {
+export async function getStudyRoomById(studyRoomId: string): Promise<GetStudyRoomResponse> {
   const studyRoom = await appwriteSDKProvider.database.getDocument<StudyRoomModel>(
     Server.dbId,
     studyRoomsCollectionID,
@@ -130,10 +117,9 @@ export async function leaveStudyRoom(studyRoomId: string, userId: string): Promi
 }
 
 export async function createStudyRoom(
-  userId: string,
-  payload: StudyRoomI
+  payload: StudyRoomI & { userId: string }
 ): Promise<StudyRoomModel | any> {
-  const { name, description, image_url, subject } = payload;
+  const { name, description, image_url, subject, userId } = payload;
   const studyRoom = await appwriteSDKProvider.database.createDocument(
     Server.dbId,
     studyRoomsCollectionID,
@@ -144,7 +130,11 @@ export async function createStudyRoom(
       image_url: image_url,
       subject,
     },
-    [Permission.delete(Role.user(userId)), Permission.update(Role.user(userId))]
+    [
+      Permission.read(Role.any()),
+      Permission.delete(Role.user(userId)),
+      Permission.update(Role.user(userId)),
+    ]
   );
 
   await joinStudyRoom({ study_room_id: studyRoom.$id, user_id: userId, role: "owner" });
