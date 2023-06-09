@@ -6,7 +6,20 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        transparent: "transparent",
+        current: "currentColor",
+        white: "#ffffff",
+        orange: "#FF8D1E",
+        purple: "#8486D7",
+        black: {
+          primary: "#28273F",
+          secondary: "#242438",
+          tertiary: "#20202D",
+        },
+      },
+    },
   },
 
   // add daisyUI plugin
