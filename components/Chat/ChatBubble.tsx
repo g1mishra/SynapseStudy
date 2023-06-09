@@ -20,7 +20,14 @@ interface ChatBubbleProps {
 }
 
 export default function ChatBubble(props: ChatBubbleProps) {
-  const { messageType, content, createdAt, status = "", user, senderId } = props;
+  const {
+    messageType,
+    content,
+    createdAt,
+    status = "",
+    user,
+    senderId,
+  } = props;
   const isSender = senderId === user?.$id;
 
   const renderMessageContent = () => {
@@ -39,7 +46,11 @@ export default function ChatBubble(props: ChatBubbleProps) {
           })}
         >
           <RadialProgress status={status} />
-          <img src={messageObj?.url} alt="Image" className="sm:max-w-md object-contain max-h-52" />
+          <img
+            src={messageObj?.url}
+            alt="Image"
+            className="sm:max-w-md object-contain max-h-52"
+          />
           <span className="mt-1 inline-block">{messageObj.message}</span>
         </div>
       );
@@ -51,7 +62,11 @@ export default function ChatBubble(props: ChatBubbleProps) {
           })}
         >
           <RadialProgress status={status} />
-          <video src={messageObj?.url} controls className="sm:max-w-md aspect-video" />
+          <video
+            src={messageObj?.url}
+            controls
+            className="sm:max-w-md aspect-video"
+          />
           <span className="mt-1 inline-block">{messageObj.message}</span>
         </div>
       );
@@ -75,7 +90,12 @@ export default function ChatBubble(props: ChatBubbleProps) {
           })}
         >
           <RadialProgress status={status} />
-          <a className="rounded" href={content} target="_blank" rel="noopener noreferrer">
+          <a
+            className="rounded"
+            href={content}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             {messageObj?.fileName}
           </a>
         </div>
@@ -94,13 +114,20 @@ export default function ChatBubble(props: ChatBubbleProps) {
     >
       <div className="chat-image avatar">
         <div className="w-10 rounded-full">
-          <Avatar imageSrc={user?.image ?? ""} alt={user?.name ?? ""} width={40} height={40} />
+          <Avatar
+            imageSrc={user?.image ?? ""}
+            alt={user?.name ?? ""}
+            width={40}
+            height={40}
+          />
         </div>
       </div>
 
       <div className="chat-header">
         <span className="mr-1">{user?.name}</span>
-        <time className="text-xs opacity-50">{formatDate(createdAt as string)}</time>
+        <time className="text-xs opacity-50">
+          {formatDate(createdAt as string)}
+        </time>
       </div>
       {renderMessageContent()}
       <div
