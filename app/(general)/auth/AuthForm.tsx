@@ -19,23 +19,21 @@ export default function LoginForm() {
 
   const { login } = useAuth();
 
-  const handleLoginSubmit = async (
-    e: React.FormEvent<HTMLFormElement>,
-    user: UserInputI
-  ) => {
+  const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>, user: UserInputI) => {
     e.preventDefault();
+
     try {
-      const response = await login(user.email, user.password);
+      await login(user.email, user.password);
     } catch (error: any) {
-      toast.error(error.message);
-      console.log(error.message);
+      let message = error.message;
+      if (error.message.includes("Invalid credentials")) {
+        message = "Invalid credentials";
+      }
+      toast.error(message);
     }
   };
 
-  const handleRegisterSubmit = async (
-    e: React.FormEvent<HTMLFormElement>,
-    user: UserInputI
-  ) => {
+  const handleRegisterSubmit = async (e: React.FormEvent<HTMLFormElement>, user: UserInputI) => {
     e.preventDefault();
     try {
       const res = await registerUser(user.email, user.password, user.name);
