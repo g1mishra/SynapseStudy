@@ -44,7 +44,7 @@ const routes = [
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
-    <main className="flex h-screen max-h-screen bg-red-500 overflow-hidden">
+    <main className="flex h-screen max-h-screen overflow-hidden">
       <div className="w-20 shrink-0 bg-black-secondary flex flex-col justify-between py-4 sticky">
         <div className="flex flex-col items-center gap-y-10">
           <div className="h-20"></div>

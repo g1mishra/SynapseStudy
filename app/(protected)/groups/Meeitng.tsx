@@ -90,7 +90,7 @@ const Meeting: React.FC = () => {
 
   const renderSpinner = () => (
     <div className="fixed inset-0 flex items-center justify-center min-h-screen">
-      <Loading className="relative" />
+      <Loading />
     </div>
   );
 
