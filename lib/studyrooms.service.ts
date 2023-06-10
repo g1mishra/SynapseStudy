@@ -58,6 +58,23 @@ export async function getAllStudyRooms(userId: string): Promise<GetStudyRoomsRes
   }
 }
 
+export async function getStudyRoomByUserId(
+  userId: string
+): Promise<Models.DocumentList<StudyRoomModel>> {
+  const userLinks = await appwriteSDKProvider.database.listDocuments(
+    Server.dbId,
+    userLinksCollectionID,
+    [Query.equal("user_id", userId)]
+  );
+
+  const studyRoomIds = userLinks.documents.map((room) => room.study_room_id);
+  if (studyRoomIds.length === 0) studyRoomIds.push("");
+
+  return appwriteSDKProvider.database.listDocuments(Server.dbId, studyRoomsCollectionID, [
+    Query.equal("$id", studyRoomIds),
+  ]);
+}
+
 export async function getStudyRoomById(studyRoomId: string): Promise<GetStudyRoomResponse> {
   const studyRoom = await appwriteSDKProvider.database.getDocument<StudyRoomModel>(
     Server.dbId,
@@ -182,49 +199,3 @@ export async function deleteStudyRoom(studyRoomId: string): Promise<any> {
     studyRoomId
   );
 }
-
-// export async function getUserJoinedStudyRooms([_url, userId]: [string, string]): Promise<
-//   Models.DocumentList<StudyRoomModel>
-// > {
-//   const userJoinedStudyRooms = await appwriteSDKProvider.database.listDocuments(
-//     Server.dbId,
-//     userLinksCollectionID,
-//     [Query.equal("user_id", userId)]
-//   );
-
-//   const studyRoomIds = userJoinedStudyRooms.documents.map((room) => room.study_room_id);
-
-//   if (studyRoomIds.length === 0) {
-//     return { documents: [], total: 0 };
-//   }
-
-//   const userJoinedStudyRoomDetails: Models.DocumentList<StudyRoomModel> =
-//     await appwriteSDKProvider.database.listDocuments(Server.dbId, studyRoomsCollectionID, [
-//       Query.equal("$id", studyRoomIds),
-//     ]);
-
-//   return userJoinedStudyRoomDetails;
-// }
-
-// export async function getUnjoinedStudyRooms([_url, userId]: [string, string]): Promise<
-//   Models.DocumentList<StudyRoomModel>
-// > {
-//   const userJoinedStudyRooms = await appwriteSDKProvider.database.listDocuments(
-//     Server.dbId,
-//     userLinksCollectionID,
-//     [Query.equal("user_id", userId)]
-//   );
-
-//   const studyRoomIds = userJoinedStudyRooms.documents.map((room) => room.study_room_id);
-
-//   if (studyRoomIds.length === 0) {
-//     studyRoomIds.push("");
-//   }
-
-//   const unjoinedStudyRoomDetails: Models.DocumentList<StudyRoomModel> =
-//     await appwriteSDKProvider.database.listDocuments(Server.dbId, studyRoomsCollectionID, [
-//       Query.notEqual("$id", studyRoomIds),
-//     ]);
-
-//   return unjoinedStudyRoomDetails;
-// }

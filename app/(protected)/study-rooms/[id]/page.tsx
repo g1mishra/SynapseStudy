@@ -51,7 +51,7 @@ export default function Page({ params: { id: studyRoomId } }: StudyRoomPageProps
           <h1 className="text-2xl font-bold">Channels</h1>
           <ul>
             {data?.channels.map((channel: any) => (
-              <Link href={`/study-rooms/${studyRoomId}/${channel.$id}`} key={channel.id}>
+              <Link href={`/study-rooms/${studyRoomId}/${channel.$id}`} key={channel.$id}>
                 <li className="cursor-pointer underline hover:underline"># {channel.name}</li>
               </Link>
             ))}
