@@ -7,11 +7,12 @@ import useSWR, { mutate } from "swr";
 interface AuthHookProps {
   redirectTo?: boolean;
 }
-  
 
-export function useAuth({ redirectTo }: AuthHookProps = {
-  redirectTo: true
-}) {
+export function useAuth(
+  { redirectTo }: AuthHookProps = {
+    redirectTo: true,
+  }
+) {
   const router = useRouter();
 
   const { data: currentUser, error } = useSWR("/auth", getCurrentUser, {

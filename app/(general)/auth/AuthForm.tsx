@@ -4,6 +4,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { registerUser } from "@/lib/auth.service";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 interface UserInputI {
   email: string;
@@ -18,16 +19,23 @@ export default function LoginForm() {
 
   const { login } = useAuth();
 
-  const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>, user: UserInputI) => {
+  const handleLoginSubmit = async (
+    e: React.FormEvent<HTMLFormElement>,
+    user: UserInputI
+  ) => {
     e.preventDefault();
     try {
-      await login(user.email, user.password);
-    } catch (err) {
-      console.log(err);
+      const response = await login(user.email, user.password);
+    } catch (error: any) {
+      toast.error(error.message);
+      console.log(error.message);
     }
   };
 
-  const handleRegisterSubmit = async (e: React.FormEvent<HTMLFormElement>, user: UserInputI) => {
+  const handleRegisterSubmit = async (
+    e: React.FormEvent<HTMLFormElement>,
+    user: UserInputI
+  ) => {
     e.preventDefault();
     try {
       const res = await registerUser(user.email, user.password, user.name);
