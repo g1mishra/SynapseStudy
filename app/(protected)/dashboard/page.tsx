@@ -21,20 +21,6 @@ export default function Dashboard() {
 
   if (loading) return <Loading />;
   return (
-    // <main className="hero min-h-[calc(100vh-80px)] bg-blue-600 py-4">
-    //   <div className="hero-content container justify-evenly flex-col">
-    //     <h1 className="text-5xl font-bold">Dashboard</h1>
-    //     <div className="flex flex-col items-center">
-    //       <h1>Name : {currentUser?.name}</h1>
-    //       <pre>
-    //         <code>{JSON.stringify(currentUser, null, 4)}</code>
-    //       </pre>
-    //       <button className="btn" onClick={logout}>
-    //         Logout
-    //       </button>
-    //     </div>
-    //   </div>
-    // </main>
     <div className="flex">
       <div className="w-1/2 flex justify-center items-center gap-8 mt-20">
         <div className="w-48 h-52 bg-orange shadow-lg rounded-lg p-7">
