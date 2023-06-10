@@ -9,6 +9,7 @@ import {
   StudyRoomsIcon,
   WhiteboardIcon,
 } from "@/components/Icons";
+import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/utils/utils";
 
 const routes = [
@@ -42,7 +43,13 @@ const routes = [
   },
 ];
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const { logout } = useAuth();
+
   return (
     <main className="flex h-screen max-h-screen overflow-hidden">
       <div className="w-20 shrink-0 bg-black-secondary flex flex-col justify-between py-4 sticky">
@@ -67,7 +74,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </ActiveLink>
           ))}
         </div>
-        <div className="flex items-center justify-center mb-4">
+        <div
+          className="flex items-center justify-center mb-4 cursor-pointer"
+          onClick={logout}
+        >
           <LogoutIcon />
         </div>
       </div>

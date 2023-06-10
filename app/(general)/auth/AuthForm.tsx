@@ -4,6 +4,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { registerUser } from "@/lib/auth.service";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 interface UserInputI {
   email: string;
@@ -20,10 +21,15 @@ export default function LoginForm() {
 
   const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>, user: UserInputI) => {
     e.preventDefault();
+
     try {
       await login(user.email, user.password);
-    } catch (err) {
-      console.log(err);
+    } catch (error: any) {
+      let message = error.message;
+      if (error.message.includes("Invalid credentials")) {
+        message = "Invalid credentials";
+      }
+      toast.error(message);
     }
   };
 
