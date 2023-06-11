@@ -15,6 +15,10 @@ export function getCurrentUser(): Promise<any> {
   return account.get();
 }
 
+export function updateUserPref(payload: object): Promise<any> {
+  return account.updatePrefs(payload);
+}
+
 export function logoutUser(): Promise<any> {
   return account.deleteSession("current");
 }

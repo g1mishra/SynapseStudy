@@ -4,12 +4,12 @@ import ActiveLink from "@/components/ActiveLink";
 import { ArrowRight } from "@/components/Icons";
 import Loading from "@/components/Loading";
 import { useAuth } from "@/hooks/useAuth";
-import useStudyRoomByUserId from "@/hooks/useStudyRoomByUserId";
+import useStudyRoomListByUserId from "@/hooks/useStudyRoomListByUserId";
 import { cn } from "@/utils/utils";
 
 export default function StudyRoomSidebar() {
   const { currentUser, loading: authLoader } = useAuth();
-  const { studyRooms, isLoading, isError } = useStudyRoomByUserId(currentUser?.$id);
+  const { studyRooms, isLoading, isError } = useStudyRoomListByUserId(currentUser?.$id);
 
   const loading = authLoader || isLoading;
 
