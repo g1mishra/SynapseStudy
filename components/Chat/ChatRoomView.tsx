@@ -1,10 +1,8 @@
-"use client";
-
+import { useEffect, useRef } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { ChatChannel, ChatMessage } from "@/types/chat";
 import ChatRoomHeader from "./ChatRoomHeader";
 import ChatRoomInput from "./ChatRoomInput";
-
 import ChatBubble from "./ChatBubble";
 
 interface ChatRoomViewProps {
@@ -14,14 +12,24 @@ interface ChatRoomViewProps {
 
 export function ChatRoomView({ roomInfo, messages }: ChatRoomViewProps) {
   const { currentUser } = useAuth();
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const chatContainer = chatContainerRef.current;
+    if (!chatContainer) return;
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+  }, [messages]);
 
   return (
-    <div className="bg-gray-100 h-full flex flex-col justify-between">
+    <div className="h-full w-full flex flex-col justify-between">
       <ChatRoomHeader chatRoom={roomInfo} />
-      <div className="py-4 px-6 bg-white m-2 shadow-md flex-1 overflow-y-auto">
-        <h1 className="text-2xl font-semibold text-gray-800">Chat Room</h1>
+      <div
+        className="py-4 px-6 m-2 shadow-md flex-1 hidden_scrollbar overflow-y-auto"
+        ref={chatContainerRef}
+      >
+        <h1 className="text-2xl font-semibold">Chat Room</h1>
         <div className="mt-4">
-          {messages?.map((message, index) => {
+          {messages?.reverse().map((message, index) => {
             let user = JSON.parse(message?.sender ?? "{}");
             return (
               <ChatBubble
@@ -37,7 +45,7 @@ export function ChatRoomView({ roomInfo, messages }: ChatRoomViewProps) {
           })}
         </div>
       </div>
-      <div className="py-4 px-6 bg-white m-2 shadow-md">
+      <div className="py-4 px-6 m-2 shadow-md">
         <ChatRoomInput channelId={roomInfo?.$id} />
       </div>
     </div>

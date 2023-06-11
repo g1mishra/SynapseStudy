@@ -15,7 +15,11 @@ export function useAuth(
 ) {
   const router = useRouter();
 
-  const { data: currentUser, error } = useSWR("/auth", getCurrentUser, {
+  const {
+    data: currentUser,
+    mutate: updateCurrentUser,
+    error,
+  } = useSWR("/auth", getCurrentUser, {
     onError: (error) => {
       console.error("Failed to fetch current user:", error);
       if (redirectTo) router.push("/auth");
@@ -43,5 +47,5 @@ export function useAuth(
 
   const loading = !currentUser && !error;
 
-  return { currentUser, loading, error, logout, login };
+  return { currentUser, loading, error, logout, login, updateCurrentUser };
 }
