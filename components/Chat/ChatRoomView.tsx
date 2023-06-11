@@ -18,34 +18,31 @@ export function ChatRoomView({ roomInfo, messages }: ChatRoomViewProps) {
     const chatContainer = chatContainerRef.current;
     if (!chatContainer) return;
     chatContainer.scrollTop = chatContainer.scrollHeight;
-  }, [messages]);
+  }, [messages?.length]);
 
   return (
     <div className="h-full w-full flex flex-col justify-between">
       <ChatRoomHeader chatRoom={roomInfo} />
       <div
-        className="py-4 px-6 m-2 shadow-md flex-1 hidden_scrollbar overflow-y-auto"
+        className="py-4 px-6 m-2 flex-1 hidden_scrollbar overflow-y-auto text-white"
         ref={chatContainerRef}
       >
-        <h1 className="text-2xl font-semibold">Chat Room</h1>
-        <div className="mt-4">
-          {messages?.reverse().map((message, index) => {
-            let user = JSON.parse(message?.sender ?? "{}");
-            return (
-              <ChatBubble
-                key={`${message.$id}-${index}`}
-                content={message.content}
-                createdAt={message.$createdAt}
-                status={message.status}
-                senderId={currentUser.$id}
-                user={user}
-                messageType={message.message_type}
-              />
-            );
-          })}
-        </div>
+        {messages?.map((message, index) => {
+          let user = JSON.parse(message?.sender ?? "{}");
+          return (
+            <ChatBubble
+              key={`${message.$id}-${index}`}
+              content={message.content}
+              createdAt={message.$createdAt}
+              status={message.status}
+              senderId={currentUser.$id}
+              user={user}
+              messageType={message.message_type}
+            />
+          );
+        })}
       </div>
-      <div className="py-4 px-6 m-2 shadow-md">
+      <div className="py-4 px-6 border rounded-15">
         <ChatRoomInput channelId={roomInfo?.$id} />
       </div>
     </div>

@@ -7,6 +7,8 @@ interface CreateChatRoomModalProps {
   onCreateChatRoom?: (studyRoom: StudyRoomI) => void;
 }
 
+type Status = "public" | "private";
+
 const CreateStudyRoomModal: React.FC<CreateChatRoomModalProps> = ({
   open,
   onClose,
@@ -14,21 +16,21 @@ const CreateStudyRoomModal: React.FC<CreateChatRoomModalProps> = ({
 }) => {
   const [name, setName] = useState("");
   const [subject, setSubject] = useState("");
-  const [description, setDescription] = useState("");
+  const [status, setstatus] = useState<string>();
   const modalRef = useRef<HTMLDivElement>(null);
 
   const handleCreateChatRoom = () => {
     const studyRoom: StudyRoomI = {
       name,
       subject,
-      description,
+      status: status as Status,
     };
 
     if (onCreateChatRoom) onCreateChatRoom(studyRoom);
 
     setName("");
     setSubject("");
-    setDescription("");
+    // setstatus(null);
 
     onClose();
   };
@@ -74,12 +76,16 @@ const CreateStudyRoomModal: React.FC<CreateChatRoomModalProps> = ({
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
           />
-          <textarea
-            className="textarea border border-gray-300"
-            placeholder="Description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
+          <select
+            name=""
+            id=""
+            className="input border border-gray-300"
+            value={status}
+            onChange={(e) => setstatus(e.target.value)}
+          >
+            <option value="public">Public</option>
+            <option value="private">Private</option>
+          </select>
 
           <button type="button" className="btn btn-primary mt-4" onClick={handleCreateChatRoom}>
             Create Chat Room
