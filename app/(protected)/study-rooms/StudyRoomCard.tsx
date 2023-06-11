@@ -6,7 +6,7 @@ interface StudyRoomCardProps {
   paragraph: string;
   buttonText: string;
   onClick: () => void;
-  status: string;
+  status?: "public" | "private";
 }
 
 const StudyRoomCard: React.FC<StudyRoomCardProps> = ({

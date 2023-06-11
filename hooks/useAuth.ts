@@ -8,11 +8,7 @@ interface AuthHookProps {
   redirectTo?: boolean;
 }
 
-export function useAuth(
-  { redirectTo }: AuthHookProps = {
-    redirectTo: true,
-  }
-) {
+export function useAuth(redirectTo = true) {
   const router = useRouter();
 
   const {

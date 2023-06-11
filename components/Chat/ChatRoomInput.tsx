@@ -86,12 +86,12 @@ export default function ChatRoomInput(props: ChatRoomInputProps) {
   }, []);
 
   return (
-    <form className="flex items-center justify-between" onSubmit={handleSendMessage}>
+    <form className="flex items-center justify-between text-white" onSubmit={handleSendMessage}>
       <div className="relative flex-1">
         <FileInputPreview file={file} handleClearFilePreview={handleClearFilePreview} />
         <input
           type="text"
-          className="w-full outline-none "
+          className="w-full outline-none bg-transparent text-white placeholder-gray-400 pr-20"
           placeholder="Type a message..."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
