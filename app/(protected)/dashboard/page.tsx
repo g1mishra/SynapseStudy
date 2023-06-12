@@ -2,12 +2,20 @@
 
 import Loading from "@/components/Loading";
 import { useAuth } from "@/hooks/useAuth";
-import { useState } from "react";
+import { use, useCallback, useState } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import dynamic from "next/dynamic";
+import { StudyRoomI } from "@/types/study-room";
+import { createStudyRoom } from "@/lib/studyrooms.service";
+import { toast } from "react-toastify";
+
+const CreateStudyRoomModal = dynamic(() => import("@/components/Modal/CreateStudyRoomModal"));
 
 export default function Dashboard() {
   const { currentUser, loading, logout } = useAuth();
   const [searchQuery, setSearchQuery] = useState("");
+  const [open, setOpen] = useState(false);
+  const [successfullyCreated, setSuccessfullyCreated] = useState(false);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -19,11 +27,24 @@ export default function Dashboard() {
     console.log("Search query:", searchQuery);
   };
 
+  const _createStudyRoom = useCallback(
+    async (studyRoom: StudyRoomI) => {
+      try {
+        const newStudyRoom = await createStudyRoom({ ...studyRoom, userId: currentUser.$id });
+        if (newStudyRoom?.$id) setSuccessfullyCreated(true);
+        else toast.error("Study room creation failed");
+      } catch (err: any) {
+        toast.error(err.message);
+      }
+    },
+    [createStudyRoom]
+  );
+
   if (loading) return <Loading />;
   return (
     <div className="flex">
       <div className="w-1/2 flex justify-center items-center gap-8 mt-20">
-        <div className="w-48 h-52 bg-orange shadow-lg rounded-lg p-7">
+        <div className="w-48 h-52 bg-orange shadow-lg rounded-lg p-7" onClick={() => setOpen(true)}>
           <p className="text-white text-lg font-semibold mt-28">New Room</p>
           <p className="text-white">set up new room</p>
         </div>
@@ -44,6 +65,12 @@ export default function Dashboard() {
           <MagnifyingGlassIcon className="absolute w-5 h-5 text-gray-500 left-3 top-2.5" />
         </form>
       </div>
+      <CreateStudyRoomModal
+        open={open}
+        onClose={() => setOpen(false)}
+        onCreateChatRoom={_createStudyRoom}
+        sucessfulCreation={successfullyCreated}
+      />
     </div>
   );
 }

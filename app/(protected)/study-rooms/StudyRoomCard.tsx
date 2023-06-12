@@ -18,14 +18,16 @@ const StudyRoomCard: React.FC<StudyRoomCardProps> = ({
 }) => {
   return (
     <div
-      className={cn("w-full max-w-[519px] h-[270px] rounded-15", {
+      className={cn("w-full max-w-[500px] h-[270px] rounded-15", {
         "bg-orange-dark": status === "public",
         "bg-purple": status === "private",
       })}
     >
       <div className="flex flex-col justify-center h-full p-8">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-white text-2xl font-bold">{heading}</h2>
+          <h2 className="text-white text-base sm:text-lg md:text-xl lg:text-2xl font-bold">
+            {heading}
+          </h2>
           <p className="flex items-center space-x-2">
             <span
               className={cn("w-2.5 h-2.5 inline-block rounded-full", {
@@ -33,12 +35,18 @@ const StudyRoomCard: React.FC<StudyRoomCardProps> = ({
                 "bg-green-light": status === "private",
               })}
             />
-            <span className={`font-bold text-2xl text-white capitalize`}>{status}</span>
+            <span
+              className={`font-bold text-base sm:text-lg md:text-xl lg:text-2xl text-white capitalize`}
+            >
+              {status}
+            </span>
           </p>
         </div>
-        <p className="text-black-secondary mb-4 text-lg max-w-[294px]">{paragraph}</p>
+        <p className="text-black-secondary mb-4 text-sm md:text-base lg:text-lg max-w-[294px]">
+          {paragraph}
+        </p>
         <button
-          className="bg-black-secondary text-white px-4 py-2 rounded-15 w-28 box-border self-end"
+          className="bg-black-secondary text-white p-3 rounded-15 w-28 box-border self-end"
           onClick={onClick}
         >
           {buttonText}
