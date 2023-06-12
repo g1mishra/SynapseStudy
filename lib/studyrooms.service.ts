@@ -76,7 +76,7 @@ export async function getStudyRoomById(studyRoomId: string): Promise<GetStudyRoo
 export async function joinStudyRoom(payload: UserLinksI): Promise<UserLinksModel | any> {
   const { study_room_id: studyRoomId, user_id: userId, role = "user" } = payload;
 
-  const userLink = await appwriteSDKProvider.database.createDocument(
+  return await appwriteSDKProvider.database.createDocument(
     Server.dbId,
     userLinksCollectionID,
     ID.unique(),
@@ -86,8 +86,6 @@ export async function joinStudyRoom(payload: UserLinksI): Promise<UserLinksModel
       role: role,
     }
   );
-
-  return userLink;
 }
 
 export async function leaveStudyRoom(studyRoomId: string, userId: string): Promise<any> {
@@ -176,3 +174,26 @@ export async function deleteStudyRoom(studyRoomId: string): Promise<any> {
     studyRoomId
   );
 }
+
+export const requestToJoinStudyRoom = async (
+  userId: string,
+  studyRoomId: string,
+  message = ""
+) => {
+  return await appwriteSDKProvider.database.createDocument(
+    Server.dbId,
+    Server.joinRequestsCollectionId,
+    ID.unique(),
+    {
+      userId,
+      studyRoomId,
+      message,
+      status: "pending",
+    },
+    [
+      Permission.read(Role.any()),
+      Permission.delete(Role.user(userId)),
+      Permission.update(Role.users()),
+    ]
+  );
+};
