@@ -22,7 +22,7 @@ export default function ChannelChat({ roomInfo }: { roomInfo: ChatChannel }) {
           const index = prev?.findIndex((message) => message.$id !== payload.$id);
           if (prev && index !== undefined && index !== -1) {
             prev[index] = payload;
-            return [...prev];
+            return prev;
           }
           return [...(prev ?? []), payload];
         });

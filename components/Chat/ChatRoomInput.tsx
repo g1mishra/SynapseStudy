@@ -56,7 +56,14 @@ export default function ChatRoomInput(props: ChatRoomInputProps) {
         setMessage("");
         setFile(null);
 
-        uploadAndCreateChatDocument(sender_id, file, chatMessage, message, mutateProgress, uniqueId);
+        uploadAndCreateChatDocument(
+          sender_id,
+          file,
+          chatMessage,
+          message,
+          mutateProgress,
+          uniqueId
+        );
         return;
       }
       chatMessage["status"] = "sent";

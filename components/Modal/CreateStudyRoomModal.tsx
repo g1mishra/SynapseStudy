@@ -28,7 +28,8 @@ const CreateStudyRoomModal: React.FC<CreateChatRoomModalProps> = ({
     onClose();
   };
 
-  const handleCreateChatRoom = () => {
+  const handleCreateChatRoom = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     const studyRoom: StudyRoomI = {
       name,
       subject,
@@ -75,8 +76,8 @@ const CreateStudyRoomModal: React.FC<CreateChatRoomModalProps> = ({
           </div>
         ) : (
           <>
-            <h2 className="text-2xl font-semibold mb-4 text-center">Create Chat Room</h2>
-            <form className="flex flex-col gap-4 pt-4 sm:pt-8">
+            <h2 className="text-2xl font-semibold mb-4 text-center">Create Study Room</h2>
+            <form className="flex flex-col gap-4 pt-4 sm:pt-8" onSubmit={handleCreateChatRoom}>
               <input
                 type="text"
                 className="input text-base border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple focus:border-transparent"
@@ -103,9 +104,7 @@ const CreateStudyRoomModal: React.FC<CreateChatRoomModalProps> = ({
                 <option value="private">Private</option>
               </select>
 
-              <button type="button" className="btn btn-primary mt-4" onClick={handleCreateChatRoom}>
-                Create Chat Room
-              </button>
+              <button className="btn btn-primary mt-4">Create</button>
             </form>
           </>
         )}
