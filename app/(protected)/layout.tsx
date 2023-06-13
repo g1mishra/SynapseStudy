@@ -1,16 +1,17 @@
 "use client";
-import ActiveLink from "@/components/ActiveLink";
 import {
   CalendarIcon,
   ChatIcon,
   DashboardIcon,
-  LogoutIcon,
   SettingsIcon,
   StudyRoomsIcon,
   WhiteboardIcon,
 } from "@/components/Icons";
 import { useAuth } from "@/hooks/useAuth";
+import Header from "./Header";
+import MenuBar from "./MenuBar";
 import { cn } from "@/utils/utils";
+import { useState } from "react";
 
 const routes = [
   {
@@ -43,45 +44,16 @@ const routes = [
   },
 ];
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const { logout } = useAuth();
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+  const { currentUser, logout } = useAuth();
 
   return (
     <main className="flex h-screen max-h-screen overflow-hidden">
-      <div className="w-20 shrink-0 bg-black-secondary flex flex-col justify-between py-4 sticky">
-        <div className="flex flex-col items-center gap-y-10">
-          <div className="h-20"></div>
-          {routes.map((route) => (
-            <ActiveLink
-              href={route.href || `#${route.name}`}
-              key={route.name}
-              className="cursor-pointer"
-            >
-              {(isActive) => (
-                <div
-                  className={cn({
-                    "text-white": isActive,
-                    "text-gray-primary": !isActive,
-                  })}
-                >
-                  {route.icon}
-                </div>
-              )}
-            </ActiveLink>
-          ))}
-        </div>
-        <div
-          className="flex items-center justify-center mb-4 cursor-pointer"
-          onClick={logout}
-        >
-          <LogoutIcon />
-        </div>
+      <MenuBar logout={logout} className={cn("hidden md:block")} />
+      <div className="w-full bg-black-primary overflow-y-auto [&>div]:pt-0 md:[&>div]:pt-8">
+        <Header className="flex md:hidden my-6 px-8 pb-4 max-w-full" currentUser={currentUser} />
+        {children}
       </div>
-      <div className="w-full bg-black-primary overflow-y-auto">{children}</div>
     </main>
   );
 }

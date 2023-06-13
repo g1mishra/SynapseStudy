@@ -1,12 +1,14 @@
 "use client";
+import { cn } from "@/utils/utils";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 
 interface Props {
   handleSubmit: (query: string) => void;
+  className?: string;
 }
 
-export default function Search({ handleSubmit }: Props) {
+export default function Search({ handleSubmit, className }: Props) {
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,7 +21,10 @@ export default function Search({ handleSubmit }: Props) {
   };
 
   return (
-    <form onSubmit={onSubmit} className="relative text-white flex items-center w-full max-w-md">
+    <form
+      onSubmit={onSubmit}
+      className={cn("relative text-white flex items-center w-full sm:max-w-md", className)}
+    >
       <input
         type="text"
         placeholder="Search"

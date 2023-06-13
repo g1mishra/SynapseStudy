@@ -2,15 +2,13 @@
 
 import Loading from "@/components/Loading";
 import { useAuth } from "@/hooks/useAuth";
-import useParticipants from "@/hooks/useParticipants";
 import { getChannelInfo } from "@/lib/chatrooms.service";
 import useSwr from "swr";
 import ChannelChat from "./ChannelChat";
 
 export default function ChatPage({ params }: { params: { id: string; channelId: string } }) {
-  const { id : studyRoomId, channelId } = params;
-  const {} = useAuth();
-  const { isLoading: loading } = useParticipants(studyRoomId);
+  const { channelId } = params;
+  const { loading } = useAuth();
 
   const { data, error, isLoading } = useSwr(
     channelId ? `/chatrooms/${channelId}` : null,
@@ -27,7 +25,7 @@ export default function ChatPage({ params }: { params: { id: string; channelId: 
 
   if (error || !data?.$id) {
     return (
-      <div>
+      <div className="h-screen flex items-center justify-center text-white">
         <h1>Oops - this chat room doesn't exist!</h1>
       </div>
     );

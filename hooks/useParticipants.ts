@@ -1,8 +1,8 @@
 import useSWR from "swr";
 
-export default function useParticipants(channelId: string) {
+export default function useParticipants(study_room_id: string) {
   const { data, error } = useSWR(
-    `/api/study-group/users/?study_room_id=${channelId}`,
+    `/api/study-group/users/?study_room_id=${study_room_id}`,
     async (url) => {
       const res = await fetch(url);
       return res.json();
