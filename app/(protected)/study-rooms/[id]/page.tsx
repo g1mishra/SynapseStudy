@@ -1,7 +1,9 @@
 "use client";
 
+import Loading from "@/components/Loading";
 import CreateChannelModal from "@/components/Modal/CreateChannelModal";
 import { useAuth } from "@/hooks/useAuth";
+import useParticipants from "@/hooks/useParticipants";
 import useStudyRoomDetailsById from "@/hooks/useStudyRoomDetailsById";
 import { createChannel, leaveStudyRoom } from "@/lib/studyrooms.service";
 import { ChannelI } from "@/types/study-room";
@@ -16,7 +18,8 @@ interface StudyRoomPageProps {
 export default function Page({ params: { id: studyRoomId } }: StudyRoomPageProps) {
   const [open, setOpen] = useState(false);
   const { currentUser } = useAuth();
-  const { data, mutate } = useStudyRoomDetailsById(studyRoomId);
+  const { data, mutate, isLoading } = useStudyRoomDetailsById(studyRoomId);
+  const { isLoading: loading } = useParticipants(studyRoomId);
   const [successfullyCreated, setSuccessfullyCreated] = useState(false);
 
   const handleLeaveClick = () => {
@@ -49,6 +52,10 @@ export default function Page({ params: { id: studyRoomId } }: StudyRoomPageProps
     },
     [createChannel]
   );
+
+  if (isLoading || loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="w-full flex flex-col gap-8 justify-center p-8 text-white">

@@ -22,31 +22,7 @@ export function ChatRoomView({ roomInfo, messages }: ChatRoomViewProps) {
     const chatContainer = chatContainerRef.current;
     if (!chatContainer) return;
 
-    const images = chatContainer.querySelectorAll("img");
-    let loadedImagesCount = 0;
-
-    const handleImageLoad = () => {
-      loadedImagesCount++;
-
-      // Scroll to the end once all images have finished loading
-      if (loadedImagesCount === images.length) {
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-      }
-    };
-
-    images.forEach((image) => {
-      if (image.complete) {
-        handleImageLoad();
-      } else {
-        image.addEventListener("load", handleImageLoad);
-      }
-    });
-
-    return () => {
-      images.forEach((image) => {
-        image.removeEventListener("load", handleImageLoad);
-      });
-    };
+    chatContainer.scrollTop = chatContainer.scrollHeight;
   }, [messages]);
 
   return (
@@ -76,7 +52,7 @@ const renderChatBubbles = (
   let currentDate: string | null = null;
   let previousSenderId: string | null = null;
   return messages.map((message, index) => {
-    let user = participants?.find((participant: any) => participant.$id === message.sender_id);
+    let user = participants?.find((participant: any) => participant?.$id === message?.sender_id);
 
     const messageDate = new Date(message.$createdAt).toLocaleDateString();
 

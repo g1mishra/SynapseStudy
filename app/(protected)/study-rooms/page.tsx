@@ -9,6 +9,7 @@ import { useMemo } from "react";
 import useSWR from "swr";
 import StudyRooms from "./StudyRooms";
 import Loading from "@/components/Loading";
+import Link from "next/link";
 
 const StudyRoomPage = () => {
   const { currentUser } = useAuth();
@@ -36,7 +37,14 @@ const StudyRoomPage = () => {
     <div className="w-full h-screen flex flex-col p-8 overflow-hidden ">
       <div className="flex justify-between items-center pb-8">
         <Search handleSubmit={handleSubmit} />
-        <Avatar className="rounded-md" width={50} height={50} />
+        <Link href="/settings">
+          <Avatar
+            className="rounded-md"
+            imageSrc={currentUser?.prefs?.image || ""}
+            width={50}
+            height={50}
+          />
+        </Link>
       </div>
       <StudyRooms publicRooms={publicRooms} privateRooms={privateRooms} />
     </div>
