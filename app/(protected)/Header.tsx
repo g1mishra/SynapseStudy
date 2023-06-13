@@ -4,20 +4,15 @@ import Avatar from "@/components/Avatar";
 import Search from "@/components/Search";
 import { cn } from "@/utils/utils";
 import Link from "next/link";
+import { Dispatch, SetStateAction } from "react";
 
 interface HeaderProps {
   currentUser: any;
   className?: string;
-  openMenu: any;
-  setOpenMenu: any;
+  setOpenMenu?: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function Header({
-  currentUser,
-  className,
-  openMenu,
-  setOpenMenu,
-}: HeaderProps) {
+export default function Header({ currentUser, className, setOpenMenu }: HeaderProps) {
   function handleSubmit(query: string) {
     console.log("Search query:", query);
   }
@@ -31,7 +26,9 @@ export default function Header({
         )}
       >
         <svg
-          onClick={() => setOpenMenu(!openMenu)}
+          onClick={() => {
+            if (setOpenMenu) setOpenMenu((prev) => !prev);
+          }}
           className="w-8 h-full cursor-pointer md:hidden"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
