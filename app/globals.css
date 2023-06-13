@@ -10,3 +10,16 @@
 .hidden_scrollbar::-webkit-scrollbar { /* WebKit */
   width: 0px;
 }
+
+.overflow-hidden > * {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE 10+ */
+}
+
+.overflow-hidden > *::-webkit-scrollbar { /* WebKit */
+  width: 0px;
+}
+
+body {
+  @apply bg-black-primary;
+}
