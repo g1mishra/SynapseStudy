@@ -9,6 +9,8 @@ export function cn(...inputs: ClassValue[]) {
 export const bucketFilePath = (bucketId: string, fileId: string) => {
   return `https://cloud.appwrite.io/v1/storage/buckets/${bucketId}/files/${fileId}/view?project=${Server.project}`;
 };
+// resp = uploadFileToBucket("assets", file,  ....)
+// bucketFilePath("assets", resp?.$id)
 
 export const getFileType = (file: File) => {
   const fileType = file.type.split("/")[0];

@@ -2,6 +2,7 @@
 
 import { getCurrentUser, loginUser, logoutUser } from "@/lib/auth.service";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 import useSWR, { mutate } from "swr";
 
 interface AuthHookProps {
@@ -34,10 +35,11 @@ export function useAuth(redirectTo = true) {
   const logout = async () => {
     try {
       await logoutUser();
-      mutate("/auth", null);
       router.push("/auth");
+      mutate("/auth", null);
     } catch (err) {
       console.log(err);
+      toast.error("Failed to logout");
     }
   };
 

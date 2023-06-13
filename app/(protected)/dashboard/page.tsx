@@ -1,36 +1,36 @@
 "use client";
 
+import Clock from "@/components/Clock";
+import {
+  AddGroup,
+  BackgroundCurveSvg,
+  FlowerIllustration,
+  JoinGroup,
+  PotIllustration,
+} from "@/components/Icons";
 import Loading from "@/components/Loading";
 import { useAuth } from "@/hooks/useAuth";
-import { use, useCallback, useState } from "react";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import dynamic from "next/dynamic";
-import { StudyRoomI } from "@/types/study-room";
 import { createStudyRoom } from "@/lib/studyrooms.service";
+import { StudyRoomI } from "@/types/study-room";
+import dynamic from "next/dynamic";
+import { useCallback, useState } from "react";
 import { toast } from "react-toastify";
+import Header from "../Header";
 
 const CreateStudyRoomModal = dynamic(() => import("@/components/Modal/CreateStudyRoomModal"));
 
 export default function Dashboard() {
-  const { currentUser, loading, logout } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
+  const { currentUser, loading } = useAuth();
   const [open, setOpen] = useState(false);
   const [successfullyCreated, setSuccessfullyCreated] = useState(false);
-
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // Handle search query submission
-    console.log("Search query:", searchQuery);
-  };
 
   const _createStudyRoom = useCallback(
     async (studyRoom: StudyRoomI) => {
       try {
-        const newStudyRoom = await createStudyRoom({ ...studyRoom, userId: currentUser.$id });
+        const newStudyRoom = await createStudyRoom({
+          ...studyRoom,
+          userId: currentUser.$id,
+        });
         if (newStudyRoom?.$id) setSuccessfullyCreated(true);
         else toast.error("Study room creation failed");
       } catch (err: any) {
@@ -42,35 +42,52 @@ export default function Dashboard() {
 
   if (loading) return <Loading />;
   return (
-    <div className="flex">
-      <div className="w-1/2 flex justify-center items-center gap-8 mt-20">
-        <div className="w-48 h-52 bg-orange shadow-lg rounded-lg p-7" onClick={() => setOpen(true)}>
-          <p className="text-white text-lg font-semibold mt-28">New Room</p>
-          <p className="text-white">set up new room</p>
+    <div className="flex flex-col p-8">
+      <Header currentUser={currentUser} className="hidden md:flex" />
+      <div className="flex flex-col-reverse md:flex-row gap-y-6 gap-x-16 md:pl-6">
+        {/* left  */}
+        <div className="w-full md:w-1/2 flex gap-y-6 gap-x-8 items-center justify-center">
+          <div
+            className="w-52 h-52 flex flex-col justify-between flex-1 bg-orange shadow-lg rounded-lg p-7 cursor-pointer"
+            onClick={() => setOpen(true)}
+          >
+            <AddGroup />
+            <div>
+              <p className="text-white text-lg font-semibold">New Room</p>
+              <p className="text-white">set up new room</p>
+            </div>
+          </div>
+          <div className="w-52 h-52 flex flex-col flex-1 justify-between bg-purple shadow-lg rounded-lg p-7 cursor-pointer">
+            <JoinGroup />
+            <div>
+              <p className="text-white text-lg font-semibold">Join Room</p>
+              <p className="text-white">via invitation link</p>
+            </div>
+          </div>
         </div>
-        <div className="w-48 h-52 bg-purple shadow-lg rounded-lg p-7">
-          <p className="text-white text-lg font-semibold mt-28">Join Room</p>
-          <p className="text-white">via invitation link</p>
+
+        {/* right */}
+        <div className="w-full md:w-1/2 flex flex-col md:items-end min-h-[170px]">
+          <div className="flex-1 w-full md:max-w-md h-52 rounded-lg bg-bayoux relative overflow-hidden">
+            <BackgroundCurveSvg className="absolute -left-14  h-60 -top-4 w-auto" />
+            <div className="absolute flex items-center left-6 inset-y-0 ">
+              <Clock />
+            </div>
+            <div className="absolute right-14 bottom-[-22px]">
+              <FlowerIllustration />
+            </div>
+            <div className="absolute -bottom-2 right-0">
+              <PotIllustration />
+            </div>
+          </div>
         </div>
+        <CreateStudyRoomModal
+          open={open}
+          onClose={() => setOpen(false)}
+          onCreateChatRoom={_createStudyRoom}
+          sucessfulCreation={successfullyCreated}
+        />
       </div>
-      <div className="w-1/2 mt-7">
-        <form onSubmit={handleSubmit} className="relative">
-          <input
-            type="text"
-            placeholder="Search"
-            value={searchQuery}
-            onChange={handleSearch}
-            className="pl-10 pr-4 py-2 w-96 rounded-md bg-black-secondary text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
-          <MagnifyingGlassIcon className="absolute w-5 h-5 text-gray-500 left-3 top-2.5" />
-        </form>
-      </div>
-      <CreateStudyRoomModal
-        open={open}
-        onClose={() => setOpen(false)}
-        onCreateChatRoom={_createStudyRoom}
-        sucessfulCreation={successfullyCreated}
-      />
     </div>
   );
 }

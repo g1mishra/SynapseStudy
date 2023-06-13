@@ -1,16 +1,22 @@
 "use client";
-import ActiveLink from "@/components/ActiveLink";
 import {
   CalendarIcon,
   ChatIcon,
   DashboardIcon,
-  LogoutIcon,
   SettingsIcon,
   StudyRoomsIcon,
   WhiteboardIcon,
 } from "@/components/Icons";
 import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/utils/utils";
+import dynamic from "next/dynamic";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
+import Header from "./Header";
+import MenuBar from "./MenuBar";
+// import StudyRoomSidebar from "./study-rooms/StudyRoomSidebar";
+
+const StudyRoomSidebar = dynamic(() => import("./study-rooms/StudyRoomSidebar"));
 
 const routes = [
   {
@@ -43,45 +49,41 @@ const routes = [
   },
 ];
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const { logout } = useAuth();
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const { currentUser, logout } = useAuth();
+  const [openMenu, setOpenMenu] = useState(false);
+
+  const shouldShowStudyRoomSidebar = pathname.includes("/study-rooms") && openMenu;
 
   return (
     <main className="flex h-screen max-h-screen overflow-hidden">
-      <div className="w-20 shrink-0 bg-black-secondary flex flex-col justify-between py-4 sticky">
-        <div className="flex flex-col items-center gap-y-10">
-          <div className="h-20"></div>
-          {routes.map((route) => (
-            <ActiveLink
-              href={route.href || `#${route.name}`}
-              key={route.name}
-              className="cursor-pointer"
-            >
-              {(isActive) => (
-                <div
-                  className={cn({
-                    "text-white": isActive,
-                    "text-gray-primary": !isActive,
-                  })}
-                >
-                  {route.icon}
-                </div>
-              )}
-            </ActiveLink>
-          ))}
-        </div>
-        <div
-          className="flex items-center justify-center mb-4 cursor-pointer"
-          onClick={logout}
-        >
-          <LogoutIcon />
-        </div>
+      <MenuBar
+        logout={logout}
+        className={cn("md:block", openMenu ? "block" : "hidden")}
+        openMenu={openMenu}
+        setOpenMenu={setOpenMenu}
+      />
+      {shouldShowStudyRoomSidebar ? (
+        <StudyRoomSidebar className="md:block bg-black-tertiary min-w-max flex-1 w-full max-w-full" />
+      ) : null}
+
+      <div
+        className={cn("w-full bg-black-primary overflow-y-auto [&>div]:pt-0 md:[&>div]:pt-8", {
+          "w-[50px]": shouldShowStudyRoomSidebar,
+        })}
+        onClick={() => {
+          shouldShowStudyRoomSidebar && setOpenMenu(false);
+        }}
+      >
+        <Header
+          className="flex md:hidden my-6 px-8 pb-4 max-w-full"
+          currentUser={currentUser}
+          setOpenMenu={setOpenMenu}
+        />
+
+        {children}
       </div>
-      <div className="w-full bg-black-primary overflow-y-auto">{children}</div>
     </main>
   );
 }
