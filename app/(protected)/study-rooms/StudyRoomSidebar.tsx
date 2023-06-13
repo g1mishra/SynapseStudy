@@ -10,15 +10,24 @@ import { cn } from "@/utils/utils";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
 
-export default function StudyRoomSidebar() {
+interface Props {
+  className?: string;
+}
+
+export default function StudyRoomSidebar({ className }: Props) {
   const params = useParams();
   const { currentUser, loading: authLoader } = useAuth();
   const [_, toggleCollapsed] = useCollapse(params?.id, false);
-  const { studyRooms, isLoading, isError } = useStudyRoomListByUserId(currentUser?.$id);
+  const { studyRooms, isLoading, isError } = useStudyRoomListByUserId(
+    currentUser?.$id
+  );
 
   const loading = authLoader || isLoading;
 
-  const handleCollapse = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+  const handleCollapse = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    id: string
+  ) => {
     if (id !== params.id) return;
     toggleCollapsed(false);
     e.preventDefault();
@@ -32,14 +41,22 @@ export default function StudyRoomSidebar() {
   if (loading) return <Loading />;
 
   return (
-    <div className="hidden_scrollbar w-full h-full overflow-y-auto scroll-smooth">
+    <div
+      className={cn(
+        "hidden_scrollbar w-full h-full overflow-y-auto scroll-smooth",
+        className
+      )}
+    >
       <h1 className="text-white text-2xl leading-tight font-bold mt-6 py-6 px-12 pr-6">
         Your Rooms
       </h1>
       <div className="h-0.25 bg-[#676683] mx-6" />
       <ul className="flex flex-col">
         {studyRooms?.map((room, index) => (
-          <li key={room.$id} className="first:mt-9 mb-1 text-lg leading-6 text-white">
+          <li
+            key={room.$id}
+            className="first:mt-9 mb-1 text-lg leading-6 text-white"
+          >
             <ActiveLink
               href={`/study-rooms/${room.$id}`}
               onClick={(e) => handleCollapse(e, room.$id)}
