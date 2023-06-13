@@ -1,7 +1,7 @@
-import { Server } from "@/utils/config";
-import appwriteSDKProvider from "./appwrite.client";
 import { ChatChannel, ChatMessage, ChatMessageI } from "@/types/chat";
+import { Server } from "@/utils/config";
 import { ID, Permission, Query, Role } from "appwrite";
+import appwriteSDKProvider from "./appwrite.client";
 
 const { database } = appwriteSDKProvider;
 
@@ -25,19 +25,15 @@ export async function getChatMessagesByChannelId(channelId: string) {
   return documents;
 }
 
-export async function createChatDocument(
-  payload: ChatMessageI & { senderId: string },
-  uniqueId = ID.unique()
-) {
-  const { senderId, ...rest } = payload;
+export async function createChatDocument(payload: ChatMessageI, uniqueId = ID.unique()) {
   return await database.createDocument<ChatMessage>(
     Server.dbId,
     Server.messagesCollectionId,
     uniqueId,
     {
-      ...rest,
+      ...payload,
     },
-    [Permission.write(Role.user(senderId)), Permission.read(Role.any())]
+    [Permission.write(Role.user(payload.sender_id)), Permission.read(Role.any())]
   );
 }
 

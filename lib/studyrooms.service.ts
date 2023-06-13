@@ -53,23 +53,26 @@ export async function getStudyRoomByUserId(userId: string): Promise<GetStudyRoom
 }
 
 export async function getStudyRoomById(studyRoomId: string): Promise<GetStudyRoomResponse> {
-  const studyRoom = await appwriteSDKProvider.database.getDocument<StudyRoomModel>(
-    Server.dbId,
-    studyRoomsCollectionID,
-    studyRoomId
-  );
-  // const userLinks = await appwriteSDKProvider.database.listDocuments(Server.dbId, userLinksCollectionID, [
-  //   Query.equal("study_room_id", studyRoomId),
-  // ]);
-  const channel = await appwriteSDKProvider.database.listDocuments<ChannelModel>(
-    Server.dbId,
-    Server.channelsCollectionId,
-    [Query.equal("study_room_id", studyRoomId)]
-  );
+  const [studyRoom, channels] = await Promise.all([
+    appwriteSDKProvider.database.getDocument<StudyRoomModel>(
+      Server.dbId,
+      studyRoomsCollectionID,
+      studyRoomId
+    ),
+    // appwriteSDKProvider.database.listDocuments<UserLinksModel>(Server.dbId, userLinksCollectionID, [
+    //   Query.equal("study_room_id", studyRoomId),
+    // ]),
+    appwriteSDKProvider.database.listDocuments<ChannelModel>(
+      Server.dbId,
+      Server.channelsCollectionId,
+      [Query.equal("study_room_id", studyRoomId)]
+    ),
+  ]);
+
   return {
     ...studyRoom,
     // userLinks: userLinks.documents,
-    channels: channel.documents,
+    channels: channels.documents,
   };
 }
 
@@ -175,11 +178,7 @@ export async function deleteStudyRoom(studyRoomId: string): Promise<any> {
   );
 }
 
-export const requestToJoinStudyRoom = async (
-  userId: string,
-  studyRoomId: string,
-  message = ""
-) => {
+export const requestToJoinStudyRoom = async (userId: string, studyRoomId: string, message = "") => {
   return await appwriteSDKProvider.database.createDocument(
     Server.dbId,
     Server.joinRequestsCollectionId,

@@ -3,17 +3,19 @@
 import Loading from "@/components/Loading";
 import { JitsiMeeting } from "@jitsi/react-sdk";
 import { IJitsiMeetExternalApi } from "@jitsi/react-sdk/lib/types";
+import { useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
 
 interface LogItem {
   message: string;
 }
 
-const Meeting: React.FC = () => {
+const JitsiMeet: React.FC = () => {
   const apiRef = useRef<IJitsiMeetExternalApi | null>(null);
   const [logItems, updateLog] = useState<LogItem[]>([]);
   const [showNew, toggleShowNew] = useState(false);
   const [knockingParticipants, updateKnockingParticipants] = useState<any[]>([]);
+  const router = useRouter();
 
   const printEventOutput = (payload: any) => {
     updateLog((items) => [...items, { message: JSON.stringify(payload) }]);
@@ -83,10 +85,11 @@ const Meeting: React.FC = () => {
 
   const handleReadyToClose = () => {
     /* eslint-disable-next-line no-alert */
-    alert("Ready to close...");
+    // router.push("/dashboard");
+    router.back();
   };
 
-  const generateRoomName = (): string => `JitsiMeetRoomNo${Math.random() * 100}-${Date.now()}`;
+  // const generateRoomName = (): string => `JitsiMeetRoomNo${Math.random() * 100}-${Date.now()}`;
 
   const renderSpinner = () => (
     <div className="fixed inset-0 flex items-center justify-center min-h-screen">
@@ -97,10 +100,12 @@ const Meeting: React.FC = () => {
   return (
     <>
       <JitsiMeeting
-        roomName={generateRoomName()}
+        domain="meet.rubberducker.xyz"
+        // roomName={generateRoomName()}
+        roomName="JitsiMeetRoomNo1"
         spinner={renderSpinner}
         configOverwrite={{
-          //   subject: "lalalala",
+          subject: "lalalala",
           hideConferenceSubject: false,
           enableClosePage: true,
         }}
@@ -112,4 +117,4 @@ const Meeting: React.FC = () => {
   );
 };
 
-export default Meeting;
+export default JitsiMeet;

@@ -11,7 +11,7 @@ export interface ChatMessageI {
   content: string;
   message_type: string;
   status?: string;
-  sender: string;
+  sender_id: string;
   receiver_id?: string;
   channel_Id?: string;
 }

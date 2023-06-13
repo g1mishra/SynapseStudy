@@ -1,10 +1,11 @@
-import React from "react";
-import { useEffect, useRef } from "react";
 import { useAuth } from "@/hooks/useAuth";
+import useParticipants from "@/hooks/useParticipants";
 import { ChatChannel, ChatMessage } from "@/types/chat";
+import { useParams } from "next/navigation";
+import React, { useEffect, useRef } from "react";
+import ChatBubble from "./ChatBubble";
 import ChatRoomHeader from "./ChatRoomHeader";
 import ChatRoomInput from "./ChatRoomInput";
-import ChatBubble from "./ChatBubble";
 
 interface ChatRoomViewProps {
   roomInfo: ChatChannel;
@@ -12,25 +13,53 @@ interface ChatRoomViewProps {
 }
 
 export function ChatRoomView({ roomInfo, messages }: ChatRoomViewProps) {
+  const { id: studyRoomId } = useParams();
   const { currentUser } = useAuth();
   const chatContainerRef = useRef<HTMLDivElement>(null);
+  const { user: participants } = useParticipants(studyRoomId);
 
   useEffect(() => {
     const chatContainer = chatContainerRef.current;
     if (!chatContainer) return;
 
-    const { clientHeight, scrollHeight } = chatContainer;
-    chatContainer.scrollTop = scrollHeight - clientHeight;
-  }, [messages?.length]);
+    const images = chatContainer.querySelectorAll("img");
+    let loadedImagesCount = 0;
+
+    const handleImageLoad = () => {
+      loadedImagesCount++;
+
+      // Scroll to the end once all images have finished loading
+      if (loadedImagesCount === images.length) {
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+      }
+    };
+
+    images.forEach((image) => {
+      if (image.complete) {
+        handleImageLoad();
+      } else {
+        image.addEventListener("load", handleImageLoad);
+      }
+    });
+
+    return () => {
+      images.forEach((image) => {
+        image.removeEventListener("load", handleImageLoad);
+      });
+    };
+  }, [messages]);
 
   return (
     <div className="h-full w-full flex flex-col justify-between">
       <ChatRoomHeader chatRoom={roomInfo} />
       <div
-        className="py-4 px-6 m-2 flex-1 hidden_scrollbar overflow-y-auto text-white scroll-smooth"
+        className="py-4 px-6 m-2 flex-1 hidden_scrollbar overflow-y-auto text-white"
+        style={{
+          overflowAnchor: "none",
+        }}
         ref={chatContainerRef}
       >
-        {messages && renderChatBubbles(messages, currentUser)}
+        {messages && renderChatBubbles(messages, currentUser, participants)}
       </div>
       <div className="py-4 px-6 border rounded-15">
         <ChatRoomInput channelId={roomInfo?.$id} />
@@ -39,11 +68,16 @@ export function ChatRoomView({ roomInfo, messages }: ChatRoomViewProps) {
   );
 }
 
-const renderChatBubbles = (messages: ChatMessage[], currentUser: { $id: string }) => {
+const renderChatBubbles = (
+  messages: ChatMessage[],
+  currentUser: { $id: string },
+  participants: any
+) => {
   let currentDate: string | null = null;
   let previousSenderId: string | null = null;
   return messages.map((message, index) => {
-    let user = JSON.parse(message?.sender ?? "{}");
+    let user = participants?.find((participant: any) => participant.$id === message.sender_id);
+
     const messageDate = new Date(message.$createdAt).toLocaleDateString();
 
     let renderDate = null;
