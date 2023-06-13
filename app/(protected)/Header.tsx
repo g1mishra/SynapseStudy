@@ -29,7 +29,7 @@ export default function Header({ currentUser, className, setOpenMenu }: HeaderPr
           onClick={() => {
             if (setOpenMenu) setOpenMenu((prev) => !prev);
           }}
-          className="w-8 h-full cursor-pointer md:hidden"
+          className="w-8 shrink-0 h-full cursor-pointer md:hidden"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"

@@ -31,7 +31,7 @@ const FileInputPreview = memo(
             {filePreview}
             <button
               type="button"
-              className={cn("absolute right-0 top-0 z-10 bg-gray-100 hover:bg-gray-200", {
+              className={cn("absolute right-0 top-0 z-10 hover:bg-gray-200", {
                 "-right-8": !file?.type.startsWith("image/"),
               })}
               onClick={handleClearFilePreview}

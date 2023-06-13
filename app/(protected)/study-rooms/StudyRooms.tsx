@@ -69,10 +69,12 @@ export default function StudyRooms({ publicRooms, privateRooms }: StudyRoomsProp
   };
 
   return (
-    <div className="w-full overflow-y-auto hidden_scrollbar">
+    <div className="w-full h-full overflow-y-auto hidden_scrollbar">
       {publicRooms && publicRooms.length > 0 ? (
         <>
-          <h1 className="text-white text-4xl font-bold mt-4 mb-12">Public Study Rooms</h1>
+          <h1 className="text-white text-2xl md:text-4xl font-bold my-6 sm:mt-4 sm:mb-12">
+            Public Study Rooms
+          </h1>
           <div className="flex flex-wrap gap-8 md:gap-12">
             {publicRooms?.map((room, index) => (
               <StudyRoomCard
@@ -90,7 +92,9 @@ export default function StudyRooms({ publicRooms, privateRooms }: StudyRoomsProp
 
       {privateRooms && privateRooms.length > 0 ? (
         <>
-          <h1 className="text-white text-4xl font-bold my-12">Private Study Rooms</h1>
+          <h1 className="text-white text-2xl md:text-4xl font-bold my-6 md:my-12">
+            Private Study Rooms
+          </h1>
           <div className="flex flex-wrap gap-8 md:gap-12">
             {privateRooms?.map((room, index) => (
               <StudyRoomCard
