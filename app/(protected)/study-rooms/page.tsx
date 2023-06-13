@@ -21,9 +21,15 @@ const StudyRoomPage = () => {
     }
   );
 
-  const publicRooms = useMemo(() => data?.filter((room) => room.status === "public"), [data]);
+  const publicRooms = useMemo(
+    () => data?.filter((room) => room.status === "public"),
+    [data]
+  );
 
-  const privateRooms = useMemo(() => data?.filter((room) => room.status === "private"), [data]);
+  const privateRooms = useMemo(
+    () => data?.filter((room) => room.status === "private"),
+    [data]
+  );
 
   function handleSubmit(query: string) {
     console.log("Search query:", query);
@@ -35,7 +41,7 @@ const StudyRoomPage = () => {
 
   return (
     <div className="w-full h-screen flex flex-col p-8 overflow-hidden ">
-      <div className="flex justify-between items-center pb-8">
+      <div className="justify-between items-center pb-8 hidden md:flex">
         <Search handleSubmit={handleSubmit} />
         <Link href="/settings">
           <Avatar
