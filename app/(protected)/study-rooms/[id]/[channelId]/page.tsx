@@ -1,13 +1,17 @@
 "use client";
 
+import Loading from "@/components/Loading";
+import { useAuth } from "@/hooks/useAuth";
+import useParticipants from "@/hooks/useParticipants";
 import { getChannelInfo } from "@/lib/chatrooms.service";
 import useSwr from "swr";
 import ChannelChat from "./ChannelChat";
-import { useAuth } from "@/hooks/useAuth";
 
-export default function ChatPage({ params }: { params: { channelId: string } }) {
-  const { channelId } = params;
+export default function ChatPage({ params }: { params: { id: string; channelId: string } }) {
+  const { id : studyRoomId, channelId } = params;
   const {} = useAuth();
+  const { isLoading: loading } = useParticipants(studyRoomId);
+
   const { data, error, isLoading } = useSwr(
     channelId ? `/chatrooms/${channelId}` : null,
     async (_) => await getChannelInfo(channelId),
@@ -17,12 +21,8 @@ export default function ChatPage({ params }: { params: { channelId: string } }) 
     }
   );
 
-  if (isLoading) {
-    return (
-      <div>
-        <h1>Loading...</h1>
-      </div>
-    );
+  if (isLoading || loading) {
+    return <Loading />;
   }
 
   if (error || !data?.$id) {

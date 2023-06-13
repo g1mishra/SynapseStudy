@@ -1,3 +1,5 @@
+const isDev = process.env.NODE_ENV === "development";
+
 export const Server = {
   endpoint: process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT ?? "",
   project: process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID ?? "",
@@ -12,4 +14,6 @@ export const Server = {
 
   // secret keys
   documentReadKey: process.env.APPWRITE_DOCUMENT_READ_KEY ?? "",
+
+  allowedOrigin: isDev ? process.env.ALLOWED_ORIGIN_DEV : process.env.ALLOWED_ORIGIN_PROD,
 };

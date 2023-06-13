@@ -28,14 +28,8 @@ export default function ChatRoomInput(props: ChatRoomInputProps) {
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
-      const sender = JSON.stringify({
-        $id: currentUser?.$id,
-        name: currentUser?.name,
-        image: currentUser?.image,
-      });
-
       const uniqueId = ID.unique();
-      const senderId = currentUser?.$id;
+      const sender_id = currentUser?.$id;
       let messageType = "text";
       let content = message; // Store the text message in the content
 
@@ -44,8 +38,7 @@ export default function ChatRoomInput(props: ChatRoomInputProps) {
         content,
         channel_Id,
         message_type: messageType, // Update the message type
-        sender,
-        senderId,
+        sender_id,
         status: "pending",
       };
 
@@ -63,7 +56,7 @@ export default function ChatRoomInput(props: ChatRoomInputProps) {
         setMessage("");
         setFile(null);
 
-        uploadAndCreateChatDocument(senderId, file, chatMessage, message, mutateProgress, uniqueId);
+        uploadAndCreateChatDocument(sender_id, file, chatMessage, message, mutateProgress, uniqueId);
         return;
       }
       chatMessage["status"] = "sent";
@@ -138,7 +131,7 @@ const SendIcon = () => {
 };
 
 const uploadAndCreateChatDocument = async (
-  senderId: string,
+  sender_id: string,
   file: File,
   payload: any,
   message: string,
@@ -149,7 +142,7 @@ const uploadAndCreateChatDocument = async (
     // Determine the message type based on the file extension
     payload["message_type"] = getFileType(file);
     // Upload the file to the bucket and get the URL
-    const fileObj = await uploadFileToBucket(senderId, file, "chat-files-bucket", (progress) => {
+    const fileObj = await uploadFileToBucket(sender_id, file, "chat-files-bucket", (progress) => {
       mutateProgress(progress);
     });
     payload["content"] = JSON.stringify({
