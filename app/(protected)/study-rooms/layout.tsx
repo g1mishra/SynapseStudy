@@ -6,7 +6,7 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col !pt-0">
       <div className="flex flex-row overflow-hidden">
         <div className="flex flex-col shrink-0 min-w-[350px] w-1/6 h-screen overflow-hidden bg-black-tertiary ">
           <StudyRoomSidebar />

@@ -2,6 +2,7 @@
 
 import { useAuth } from "@/hooks/useAuth";
 import { registerUser } from "@/lib/auth.service";
+import { cn } from "@/utils/utils";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -13,18 +14,14 @@ interface UserInputI {
 }
 
 export default function LoginForm() {
-  const router = useRouter();
   const [variant, setVariant] = useState("login");
-  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const { login } = useAuth();
 
-  const handleLoginSubmit = async (
-    e: React.FormEvent<HTMLFormElement>,
-    user: UserInputI
-  ) => {
+  const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>, user: UserInputI) => {
+    if (!loading) setLoading(true);
     e.preventDefault();
-
     try {
       await login(user.email, user.password);
     } catch (error: any) {
@@ -33,21 +30,17 @@ export default function LoginForm() {
         message = "Invalid credentials";
       }
       toast.error(message);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleRegisterSubmit = async (
-    e: React.FormEvent<HTMLFormElement>,
-    user: UserInputI
-  ) => {
+  const handleRegisterSubmit = async (e: React.FormEvent<HTMLFormElement>, user: UserInputI) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const res = await registerUser(user.email, user.password, user.name);
-      if (res?.error) {
-        setError(res.error);
-      } else {
-        handleLoginSubmit(e, user);
-      }
+      handleLoginSubmit(e, user);
     } catch (error: any) {
       let message = error.message;
       if (error.message.includes("Invalid email")) {
@@ -55,6 +48,8 @@ export default function LoginForm() {
         message = "Email is invalid";
       }
       toast.error(message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -62,9 +57,9 @@ export default function LoginForm() {
     <div className="card relative flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
       <div className="card-body">
         {variant === "login" ? (
-          <Form handleSubmit={handleLoginSubmit} variant={variant} />
+          <Form handleSubmit={handleLoginSubmit} variant={variant} loading={loading} />
         ) : (
-          <Form handleSubmit={handleRegisterSubmit} variant={variant} />
+          <Form handleSubmit={handleRegisterSubmit} variant={variant} loading={loading} />
         )}
         <button
           className="underline tracking-wide"
@@ -82,9 +77,11 @@ export default function LoginForm() {
 const Form = ({
   handleSubmit,
   variant,
+  loading,
 }: {
   handleSubmit: (e: React.FormEvent<HTMLFormElement>, user: UserInputI) => void;
   variant?: string;
+  loading?: boolean;
 }) => {
   const [user, setUser] = useState({ email: "", password: "", name: "" });
 
@@ -132,12 +129,37 @@ const Form = ({
         />
       </div>
       <div className="form-control mt-6">
-        <input
+        <button
           type="submit"
-          value={variant === "login" ? "Login" : "Register"}
-          className="btn btn-primary"
-        />
-      </div>{" "}
+          className="btn btn-primary flex justify-center disabled:btn-primary"
+          disabled={loading}
+        >
+          {loading ? (
+            <svg
+              className="animate-spin -ml-6 mr-3 h-5 w-5 text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+          ) : null}
+
+          {variant === "login" ? "Login" : "Register"}
+        </button>
+      </div>
     </form>
   );
 };
