@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 
 export default function CTAButton() {
   const router = useRouter();
-  const { loading, currentUser } = useAuth({ redirectTo: false });
+  const { loading, currentUser } = useAuth(false);
 
   const handleCTA = () => {
     if (currentUser && !loading) {

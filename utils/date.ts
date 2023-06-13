@@ -13,6 +13,15 @@ export function formatDate(dateString: string) {
   return formattedDate;
 }
 
-const inputDate = "2021-07-22T00:00:00Z";
-const formattedDate = formatDate(inputDate);
-console.log(formattedDate);
+
+export function formatTime(dateString: string) {
+  const date = new Date(dateString);
+
+  const formattedTime = date.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+
+  return formattedTime;
+}

@@ -42,8 +42,13 @@ export default function LoginForm() {
       } else {
         handleLoginSubmit(e, user);
       }
-    } catch (err) {
-      console.log(err);
+    } catch (error: any) {
+      let message = error.message;
+      if (error.message.includes("Invalid email")) {
+        // Invalid email: Value must be a valid email address
+        message = "Email is invalid";
+      }
+      toast.error(message);
     }
   };
 

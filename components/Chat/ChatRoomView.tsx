@@ -1,11 +1,11 @@
-"use client";
-
 import { useAuth } from "@/hooks/useAuth";
+import useParticipants from "@/hooks/useParticipants";
 import { ChatChannel, ChatMessage } from "@/types/chat";
+import { useParams } from "next/navigation";
+import React, { useEffect, useRef } from "react";
+import ChatBubble from "./ChatBubble";
 import ChatRoomHeader from "./ChatRoomHeader";
 import ChatRoomInput from "./ChatRoomInput";
-
-import ChatBubble from "./ChatBubble";
 
 interface ChatRoomViewProps {
   roomInfo: ChatChannel;
@@ -13,33 +13,118 @@ interface ChatRoomViewProps {
 }
 
 export function ChatRoomView({ roomInfo, messages }: ChatRoomViewProps) {
+  const { id: studyRoomId } = useParams();
   const { currentUser } = useAuth();
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+  const { user: participants } = useParticipants(studyRoomId);
+
+  useEffect(() => {
+    const chatContainer = chatContainerRef.current;
+    if (!chatContainer) return;
+
+    const images = chatContainer.querySelectorAll("img");
+    let loadedImagesCount = 0;
+
+    const handleImageLoad = () => {
+      loadedImagesCount++;
+
+      // Scroll to the end once all images have finished loading
+      if (loadedImagesCount === images.length) {
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+      }
+    };
+
+    images.forEach((image) => {
+      if (image.complete) {
+        handleImageLoad();
+      } else {
+        image.addEventListener("load", handleImageLoad);
+      }
+    });
+
+    return () => {
+      images.forEach((image) => {
+        image.removeEventListener("load", handleImageLoad);
+      });
+    };
+  }, [messages]);
 
   return (
-    <div className="bg-gray-100 h-full flex flex-col justify-between">
+    <div className="h-full w-full flex flex-col justify-between">
       <ChatRoomHeader chatRoom={roomInfo} />
-      <div className="py-4 px-6 bg-white m-2 shadow-md flex-1 overflow-y-auto">
-        <h1 className="text-2xl font-semibold text-gray-800">Chat Room</h1>
-        <div className="mt-4">
-          {messages?.map((message, index) => {
-            let user = JSON.parse(message?.sender ?? "{}");
-            return (
-              <ChatBubble
-                key={`${message.$id}-${index}`}
-                content={message.content}
-                createdAt={message.$createdAt}
-                status={message.status}
-                senderId={currentUser.$id}
-                user={user}
-                messageType={message.message_type}
-              />
-            );
-          })}
-        </div>
+      <div
+        className="py-4 px-6 m-2 flex-1 hidden_scrollbar overflow-y-auto text-white"
+        style={{
+          overflowAnchor: "none",
+        }}
+        ref={chatContainerRef}
+      >
+        {messages && renderChatBubbles(messages, currentUser, participants)}
       </div>
-      <div className="py-4 px-6 bg-white m-2 shadow-md">
+      <div className="py-4 px-6 border rounded-15">
         <ChatRoomInput channelId={roomInfo?.$id} />
       </div>
     </div>
   );
 }
+
+const renderChatBubbles = (
+  messages: ChatMessage[],
+  currentUser: { $id: string },
+  participants: any
+) => {
+  let currentDate: string | null = null;
+  let previousSenderId: string | null = null;
+  return messages.map((message, index) => {
+    let user = participants?.find((participant: any) => participant.$id === message.sender_id);
+
+    const messageDate = new Date(message.$createdAt).toLocaleDateString();
+
+    let renderDate = null;
+    if (messageDate !== currentDate) {
+      renderDate = renderDateSegment(messageDate);
+      currentDate = messageDate;
+      previousSenderId = null; // Reset previous sender ID for new date segment
+    }
+
+    const isConsecutiveMessage = user?.$id === previousSenderId;
+
+    previousSenderId = user?.$id;
+
+    return (
+      <React.Fragment key={`${message.$id}-${index}`}>
+        {!isConsecutiveMessage && renderDate} {/* Render date segment only if not consecutive */}
+        <ChatBubble
+          content={message.content}
+          createdAt={message.$createdAt}
+          status={message.status}
+          senderId={currentUser.$id}
+          user={user}
+          messageType={message.message_type}
+          isConsecutiveMessage={isConsecutiveMessage} // Pass isConsecutiveMessage to ChatBubble
+        />
+      </React.Fragment>
+    );
+  });
+};
+
+const renderDateSegment = (date: string) => {
+  const today = new Date().toLocaleDateString();
+  const yesterday = new Date(Date.now() - 86400000).toLocaleDateString();
+
+  let segmentText = date;
+
+  if (date === today) {
+    segmentText = "Today";
+  } else if (date === yesterday) {
+    segmentText = "Yesterday";
+  }
+
+  return (
+    <div className="flex items-center my-2">
+      <hr className="flex-grow border-gray-600" />
+      <span className="px-4 text-gray-500">{segmentText}</span>
+      <hr className="flex-grow border-gray-600" />
+    </div>
+  );
+};

@@ -1,6 +1,6 @@
 export default function Loading() {
   return (
-    <div className="fixed inset-0 z-50 w-screen h-screen backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 w-screen h-screen bg-black-secondary bg-opacity-10 backdrop-filter backdrop-blur-sm">
       <div className="flex h-full items-center justify-center">
         <div className="relative w-28 h-28 border-red-500 mx-auto my-0">
           <div className="absolute mt-[-2.7em] ml-[-2.7em] w-[5.4em] h-[5.4em] text-[15px] left-2/4 top-2/4">
@@ -10,11 +10,5 @@ export default function Loading() {
         </div>
       </div>
     </div>
-  );
-}
-
-export function Loader() {
-  return (
-    <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
   );
 }

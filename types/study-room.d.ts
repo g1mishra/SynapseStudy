@@ -2,9 +2,9 @@ import { Models } from "node-appwrite";
 
 export interface StudyRoomI {
   name: string;
-  description: string;
   image_url?: string;
   subject: string;
+  status?: "public" | "private";
 }
 
 export interface StudyRoomModel extends Models.Document, StudyRoomI {

@@ -12,55 +12,32 @@ import appwriteSDKProvider from "./appwrite.client";
 const studyRoomsCollectionID = Server.roomsCollectionId;
 const userLinksCollectionID = Server.userLinksCollectionId;
 
-export interface GetStudyRoomsResponse {
-  joinedStudyRooms: StudyRoomModel[];
-  restStudyRooms: StudyRoomModel[];
-  total: number;
-}
+export type GetStudyRoomsResponse = Models.DocumentList<StudyRoomModel>;
 
 export interface GetStudyRoomResponse extends StudyRoomModel {
   // userLinks: UserLinksModel[];
   channels: ChannelModel[];
 }
 
-export async function getAllStudyRooms(userId: string): Promise<GetStudyRoomsResponse> {
-  try {
-    const userLinks = await appwriteSDKProvider.database.listDocuments(
-      Server.dbId,
-      userLinksCollectionID,
-      [Query.equal("user_id", userId)]
-    );
+export async function getAllStudyRooms(userId: string): Promise<Models.Document[]> {
+  const userLinks = await appwriteSDKProvider.database.listDocuments(
+    Server.dbId,
+    userLinksCollectionID,
+    [Query.equal("user_id", userId)]
+  );
 
-    const studyRoomIds = userLinks.documents.map((room) => room.study_room_id);
+  const studyRoomIds = userLinks.documents.map((room) => room.study_room_id);
 
-    if (studyRoomIds.length === 0) {
-      studyRoomIds.push("");
-    }
-
-    const joinedStudyRooms: Models.DocumentList<StudyRoomModel> =
-      await appwriteSDKProvider.database.listDocuments(Server.dbId, studyRoomsCollectionID, [
-        Query.equal("$id", studyRoomIds),
-      ]);
-
-    const restStudyRooms: Models.DocumentList<StudyRoomModel> =
-      await appwriteSDKProvider.database.listDocuments(Server.dbId, studyRoomsCollectionID, [
-        Query.notEqual("$id", studyRoomIds),
-      ]);
-
-    return {
-      joinedStudyRooms: joinedStudyRooms.documents,
-      restStudyRooms: restStudyRooms.documents,
-      total: joinedStudyRooms.total + restStudyRooms.total,
-    };
-  } catch (error) {
-    console.log(error);
-    return { joinedStudyRooms: [], restStudyRooms: [], total: 0 };
+  if (studyRoomIds.length === 0) {
+    studyRoomIds.push("");
   }
+
+  return (
+    await appwriteSDKProvider.database.listDocuments(Server.dbId, studyRoomsCollectionID)
+  ).documents.filter((room) => !studyRoomIds.includes(room.$id));
 }
 
-export async function getStudyRoomByUserId(
-  userId: string
-): Promise<Models.DocumentList<StudyRoomModel>> {
+export async function getStudyRoomByUserId(userId: string): Promise<GetStudyRoomsResponse> {
   const userLinks = await appwriteSDKProvider.database.listDocuments(
     Server.dbId,
     userLinksCollectionID,
@@ -76,30 +53,33 @@ export async function getStudyRoomByUserId(
 }
 
 export async function getStudyRoomById(studyRoomId: string): Promise<GetStudyRoomResponse> {
-  const studyRoom = await appwriteSDKProvider.database.getDocument<StudyRoomModel>(
-    Server.dbId,
-    studyRoomsCollectionID,
-    studyRoomId
-  );
-  // const userLinks = await appwriteSDKProvider.database.listDocuments(Server.dbId, userLinksCollectionID, [
-  //   Query.equal("study_room_id", studyRoomId),
-  // ]);
-  const channel = await appwriteSDKProvider.database.listDocuments<ChannelModel>(
-    Server.dbId,
-    Server.channelsCollectionId,
-    [Query.equal("study_room_id", studyRoomId)]
-  );
+  const [studyRoom, channels] = await Promise.all([
+    appwriteSDKProvider.database.getDocument<StudyRoomModel>(
+      Server.dbId,
+      studyRoomsCollectionID,
+      studyRoomId
+    ),
+    // appwriteSDKProvider.database.listDocuments<UserLinksModel>(Server.dbId, userLinksCollectionID, [
+    //   Query.equal("study_room_id", studyRoomId),
+    // ]),
+    appwriteSDKProvider.database.listDocuments<ChannelModel>(
+      Server.dbId,
+      Server.channelsCollectionId,
+      [Query.equal("study_room_id", studyRoomId)]
+    ),
+  ]);
+
   return {
     ...studyRoom,
     // userLinks: userLinks.documents,
-    channels: channel.documents,
+    channels: channels.documents,
   };
 }
 
 export async function joinStudyRoom(payload: UserLinksI): Promise<UserLinksModel | any> {
   const { study_room_id: studyRoomId, user_id: userId, role = "user" } = payload;
 
-  const userLink = await appwriteSDKProvider.database.createDocument(
+  return await appwriteSDKProvider.database.createDocument(
     Server.dbId,
     userLinksCollectionID,
     ID.unique(),
@@ -109,8 +89,6 @@ export async function joinStudyRoom(payload: UserLinksI): Promise<UserLinksModel
       role: role,
     }
   );
-
-  return userLink;
 }
 
 export async function leaveStudyRoom(studyRoomId: string, userId: string): Promise<any> {
@@ -136,14 +114,14 @@ export async function leaveStudyRoom(studyRoomId: string, userId: string): Promi
 export async function createStudyRoom(
   payload: StudyRoomI & { userId: string }
 ): Promise<StudyRoomModel | any> {
-  const { name, description, image_url, subject, userId } = payload;
+  const { name, status, image_url, subject, userId } = payload;
   const studyRoom = await appwriteSDKProvider.database.createDocument(
     Server.dbId,
     studyRoomsCollectionID,
     ID.unique(),
     {
       name,
-      description,
+      status,
       image_url: image_url,
       subject,
     },
@@ -160,14 +138,14 @@ export async function createStudyRoom(
 }
 
 export async function updateStudyRoom(payload: StudyRoomModel): Promise<StudyRoomModel | any> {
-  const { name, description, image_url, subject, $id: studyRoomId } = payload;
+  const { name, status, image_url, subject, $id: studyRoomId } = payload;
   const studyRoom = await appwriteSDKProvider.database.updateDocument(
     Server.dbId,
     studyRoomsCollectionID,
     studyRoomId,
     {
       name,
-      description,
+      status,
       image_url,
       subject,
     }
@@ -199,3 +177,22 @@ export async function deleteStudyRoom(studyRoomId: string): Promise<any> {
     studyRoomId
   );
 }
+
+export const requestToJoinStudyRoom = async (userId: string, studyRoomId: string, message = "") => {
+  return await appwriteSDKProvider.database.createDocument(
+    Server.dbId,
+    Server.joinRequestsCollectionId,
+    ID.unique(),
+    {
+      userId,
+      studyRoomId,
+      message,
+      status: "pending",
+    },
+    [
+      Permission.read(Role.any()),
+      Permission.delete(Role.user(userId)),
+      Permission.update(Role.users()),
+    ]
+  );
+};
