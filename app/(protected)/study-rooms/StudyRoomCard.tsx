@@ -18,14 +18,14 @@ const StudyRoomCard: React.FC<StudyRoomCardProps> = ({
 }) => {
   return (
     <div
-      className={cn("w-full max-w-[500px] h-[270px] rounded-15", {
+      className={cn("w-full max-w-[500px] min-w-max sm:h-[250px] rounded-15", {
         "bg-orange-dark": status === "public",
         "bg-purple": status === "private",
       })}
     >
       <div className="flex flex-col justify-center h-full p-8">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-white text-base sm:text-lg md:text-xl lg:text-2xl font-bold">
+          <h2 className="text-white text-lg sm:text-xl lg:text-2xl font-bold">
             {heading}
           </h2>
           <p className="flex items-center space-x-2">
@@ -36,17 +36,19 @@ const StudyRoomCard: React.FC<StudyRoomCardProps> = ({
               })}
             />
             <span
-              className={`font-bold text-base sm:text-lg md:text-xl lg:text-2xl text-white capitalize`}
+              className={`font-bold text-lg sm:text-xl lg:text-2xl text-white capitalize`}
             >
               {status}
             </span>
           </p>
         </div>
-        <p className="text-black-secondary mb-4 text-sm md:text-base lg:text-lg max-w-[294px]">
-          {paragraph}
+        <p className="text-black-secondary mb-4 text-base md:text-base lg:text-lg max-w-[294px] line-clamp-2">
+          {paragraph} Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur magni iure
+          ratione ut culpa! Perspiciatis eaque odit possimus aliquid consectetur voluptatibus
+          tempora asperiores, cumque dignissimos temporibus neque totam dolorum veritatis!
         </p>
         <button
-          className="bg-black-secondary text-white p-3 rounded-15 w-28 box-border self-end"
+          className="bg-black-secondary text-white p-3 rounded-15 w-28 box-border justify-self-end self-end"
           onClick={onClick}
         >
           {buttonText}
