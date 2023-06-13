@@ -19,7 +19,10 @@ export default function LoginForm() {
 
   const { login } = useAuth();
 
-  const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>, user: UserInputI) => {
+  const handleLoginSubmit = async (
+    e: React.FormEvent<HTMLFormElement>,
+    user: UserInputI
+  ) => {
     e.preventDefault();
 
     try {
@@ -33,7 +36,10 @@ export default function LoginForm() {
     }
   };
 
-  const handleRegisterSubmit = async (e: React.FormEvent<HTMLFormElement>, user: UserInputI) => {
+  const handleRegisterSubmit = async (
+    e: React.FormEvent<HTMLFormElement>,
+    user: UserInputI
+  ) => {
     e.preventDefault();
     try {
       const res = await registerUser(user.email, user.password, user.name);

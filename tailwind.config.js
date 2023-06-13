@@ -30,6 +30,7 @@ module.exports = {
           dark: "#F9762E",
         },
         purple: "#8486D7",
+        bayoux: "#3B6277",
         black: {
           primary: "#28273F",
           secondary: "#242438",
