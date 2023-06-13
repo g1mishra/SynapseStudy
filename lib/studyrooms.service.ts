@@ -1,4 +1,5 @@
 import {
+  ChannelI,
   ChannelModel,
   StudyRoomI,
   StudyRoomModel,
@@ -15,7 +16,7 @@ const userLinksCollectionID = Server.userLinksCollectionId;
 export type GetStudyRoomsResponse = Models.DocumentList<StudyRoomModel>;
 
 export interface GetStudyRoomResponse extends StudyRoomModel {
-  // userLinks: UserLinksModel[];
+  userLinks: UserLinksModel[];
   channels: ChannelModel[];
 }
 
@@ -53,15 +54,15 @@ export async function getStudyRoomByUserId(userId: string): Promise<GetStudyRoom
 }
 
 export async function getStudyRoomById(studyRoomId: string): Promise<GetStudyRoomResponse> {
-  const [studyRoom, channels] = await Promise.all([
+  const [studyRoom, userLinks, channels] = await Promise.all([
     appwriteSDKProvider.database.getDocument<StudyRoomModel>(
       Server.dbId,
       studyRoomsCollectionID,
       studyRoomId
     ),
-    // appwriteSDKProvider.database.listDocuments<UserLinksModel>(Server.dbId, userLinksCollectionID, [
-    //   Query.equal("study_room_id", studyRoomId),
-    // ]),
+    appwriteSDKProvider.database.listDocuments<UserLinksModel>(Server.dbId, userLinksCollectionID, [
+      Query.equal("study_room_id", studyRoomId),
+    ]),
     appwriteSDKProvider.database.listDocuments<ChannelModel>(
       Server.dbId,
       Server.channelsCollectionId,
@@ -71,7 +72,7 @@ export async function getStudyRoomById(studyRoomId: string): Promise<GetStudyRoo
 
   return {
     ...studyRoom,
-    // userLinks: userLinks.documents,
+    userLinks: userLinks.documents,
     channels: channels.documents,
   };
 }
@@ -87,7 +88,12 @@ export async function joinStudyRoom(payload: UserLinksI): Promise<UserLinksModel
       study_room_id: studyRoomId,
       user_id: userId,
       role: role,
-    }
+    },
+    [
+      Permission.read(Role.any()),
+      Permission.delete(Role.user(userId)),
+      Permission.update(Role.user(userId)),
+    ]
   );
 }
 
@@ -193,6 +199,25 @@ export const requestToJoinStudyRoom = async (userId: string, studyRoomId: string
       Permission.read(Role.any()),
       Permission.delete(Role.user(userId)),
       Permission.update(Role.users()),
+    ]
+  );
+};
+
+export const createChannel = async (
+  payload: ChannelI & { userId: string }
+): Promise<ChannelModel | any> => {
+  const { userId, ...rest } = payload;
+  return await appwriteSDKProvider.database.createDocument(
+    Server.dbId,
+    Server.channelsCollectionId,
+    ID.unique(),
+    {
+      ...rest,
+    },
+    [
+      Permission.read(Role.any()),
+      Permission.delete(Role.user(userId)),
+      Permission.update(Role.user(userId)),
     ]
   );
 };

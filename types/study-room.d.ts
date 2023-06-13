@@ -24,6 +24,7 @@ export interface UserLinksModel extends Models.Document, UserLinksI {
 export interface ChannelI {
   name: string;
   study_room_id: string;
+  description?: string;
 }
 
 export interface ChannelModel extends Models.Document, ChannelI {
