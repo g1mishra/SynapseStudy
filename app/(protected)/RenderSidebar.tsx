@@ -16,8 +16,10 @@ const RenderSidebar = ({ sidebarLevel, setSidebarLevel, setOpenMenu }: Props) =>
       return (
         <StudyRoomSidebar
           handleClick={(value?: number) => {
-            if (value) setSidebarLevel(value);
-            else setSidebarLevel(1);
+            if (value) {
+              setSidebarLevel(value);
+              setOpenMenu(false);
+            } else setSidebarLevel(1);
           }}
         />
       );

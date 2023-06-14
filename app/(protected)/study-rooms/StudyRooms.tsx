@@ -1,13 +1,13 @@
 import RequestToJoinModal from "@/components/Modal/RequestToJoinModal";
 import { useAuth } from "@/hooks/useAuth";
+import useStudyRoomListByUserId from "@/hooks/useStudyRoomListByUserId";
 import { joinStudyRoom, requestToJoinStudyRoom } from "@/lib/studyrooms.service";
 import { StudyRoomModel } from "@/types/study-room";
 import { Models } from "appwrite";
-import { useState } from "react";
-import StudyRoomCard from "./StudyRoomCard";
+import { useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import { useSWRConfig } from "swr";
-import useStudyRoomListByUserId from "@/hooks/useStudyRoomListByUserId";
+import StudyRoomCard from "./StudyRoomCard";
 
 interface StudyRoomsProps {
   publicRooms?: Models.Document[];
@@ -22,6 +22,10 @@ export default function StudyRooms({ publicRooms, privateRooms }: StudyRoomsProp
   const { currentUser } = useAuth();
   const { mutate: mutateSidebarList } = useStudyRoomListByUserId(currentUser?.$id);
   const { mutate } = useSWRConfig();
+
+  const isNotAvailable = useMemo(() => {
+    return publicRooms?.length === 0 && privateRooms?.length === 0;
+  }, [publicRooms, privateRooms]);
 
   const handleJoinClick = async (room: StudyRoomModel) => {
     if (room.status === "private") {
@@ -70,6 +74,13 @@ export default function StudyRooms({ publicRooms, privateRooms }: StudyRoomsProp
 
   return (
     <div className="w-full h-full overflow-y-auto hidden_scrollbar">
+      {isNotAvailable ? (
+        <div className="flex flex-col items-center justify-center h-full">
+          <h1 className="text-white text-xl sm:text-2xl md:text-4xl font-bold my-6 md:my-12">
+            No Study Rooms Available
+          </h1>
+        </div>
+      ) : null}
       {publicRooms && publicRooms.length > 0 ? (
         <>
           <h1 className="text-white text-2xl md:text-4xl font-bold my-6 sm:mt-4 sm:mb-12">
