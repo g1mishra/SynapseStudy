@@ -10,14 +10,14 @@ export default async function Page() {
   return (
     <>
       <main className="hero h-[calc(70vh)] bg-[#ffffff] relative">
-        <div className="hero-content text-center">
+        <div className="hero-content text-center mt-8 sm:mt-0">
           <div className="max-w-screen-md mb-44">
-            <h1 className="text-5xl font-bold text-black-primary">Synapse Study</h1>
+            <h1 className="text-3xl md:text-5xl font-bold text-black-primary">Synapse Study</h1>
             <p className="py-6">An ordinary not so ordinary place for you and your community</p>
             <CTAButton />
           </div>
         </div>
-        <div className="absolute left-0 right-0 bottom-0 flex items-center justify-center translate-y-1/2">
+        <div className="absolute left-0 right-0 bottom-0 px-4 flex items-center justify-center translate-y-1/2">
           <Image
             src={bucketFilePath("assets", "6489efbe17d765d66735")}
             width="700"
@@ -31,7 +31,7 @@ export default async function Page() {
       <AboutPage />
       <CTABanner />
       <FeaturesSection />
-      <section className="w-full py-8 flex justify-evenly flex-col sm:flex-row bg-white text-black">
+      <section className="w-full px-4 py-8 flex justify-evenly flex-col sm:flex-row bg-white text-black">
         <div className="flex flex-col items-center text-center md:text-left">
           <h1 className="text-2xl md:text-4xl leading-relaxed text-[#F9762E] font-semibold mb-4">
             WE BUILD WHAT WE BELIEVE IN. <br />
@@ -60,7 +60,7 @@ export default async function Page() {
           </p>
         </div>
       </section>
-      <section className="container mx-auto px-6 py-12 h-full flex flex-col md:flex-row justify-evenly items-center text-white">
+      <section id="contact" className="container mx-auto px-6 py-12 h-full flex flex-col md:flex-row justify-evenly items-center text-white">
         <h1 className="text-3xl font-bold mb-4 leading-relaxed self-start">
           LET'S MAKE <br /> SOMETHING GREAT <br /> TOGETHER
         </h1>

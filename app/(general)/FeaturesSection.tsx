@@ -1,7 +1,7 @@
 const FeaturesSection = () => {
   return (
-    <section className="grid grid-cols-1 md:grid-cols-3 auto-rows-auto">
-      <div className="bg-[#8486D7]  py-8 flex flex-col  items-center text-left">
+    <section id="features" className="grid grid-cols-1 md:grid-cols-3 auto-rows-auto">
+      <div className="px-4 bg-[#8486D7]  py-8 flex flex-col  items-center text-left">
         <div className="max-w-sm py-4 sm:p-4">
           <h2 className="text-white font-semibold text-xl mb-6">Document Sharing - </h2>
           <p className="text-white text-lg">
@@ -10,7 +10,7 @@ const FeaturesSection = () => {
           </p>
         </div>
       </div>
-      <div className="bg-[#F9762E]  py-8 flex flex-col  items-center ">
+      <div className="px-4 bg-[#F9762E]  py-8 flex flex-col  items-center ">
         <div className="max-w-sm py-4 sm:p-4">
           <h2 className="text-white font-semibold text-xl mb-6">Virtual Whiteboard - </h2>
           <p className="text-white text-lg">
@@ -19,7 +19,7 @@ const FeaturesSection = () => {
           </p>
         </div>
       </div>
-      <div className="bg-[#28273F]  py-8 flex flex-col  items-center ">
+      <div className="px-4 bg-[#28273F]  py-8 flex flex-col  items-center ">
         <div className="max-w-sm py-4 sm:p-4">
           <h2 className="text-white font-semibold text-xl mb-6">Video Conferencing - </h2>
           <p className="text-white text-lg">

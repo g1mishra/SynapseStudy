@@ -1,27 +1,75 @@
+"use client";
+
 import { Logo } from "@/components/Icons";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { cn } from "@/utils/utils";
 import Link from "next/link";
+import { useState } from "react";
 
 const Header: React.FC = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const matches = useMediaQuery("(min-width: 768px)");
+
+  const handleLinkClick = (e: any, id: string) => {
+    e.preventDefault();
+
+    const el = document.querySelector(id);
+    if (el) {
+      el.scrollIntoView({
+        behavior: "smooth",
+        block: matches ? "center" : "start",
+      });
+    }
+  };
+
   return (
     <>
-      <header className="navbar bg-black-primary text-white fixed h-20 z-[60]">
-        <nav className="container mx-auto px-4 py-2 flex items-center justify-between">
+      <header className={cn("navbar bg-black-primary text-white fixed h-20 z-[60]")}>
+        <nav className="container mx-auto px-4 py-2 flex items-center justify-between relative">
+          <svg
+            onClick={() => {
+              setIsMenuOpen((prev) => !prev);
+            }}
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6 block md:hidden"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M3 12h18M3 6h18M3 18h18"></path>
+          </svg>
           <Link href="/" className="text-xl font-bold flex justify-center items-center gap-5">
             <Logo /> SynapseStudy
           </Link>
-          <ul className="flex space-x-4">
+          <div className="block sm:hidden" />
+          <ul className="hidden md:flex space-x-4">
             <li>
-              <Link href="/about" className="btn btn-ghost">
+              <Link
+                onClick={(e) => handleLinkClick(e, "#about")}
+                href="#about"
+                className="btn btn-ghost"
+              >
                 About
               </Link>
             </li>
             <li>
-              <Link href="/features" className="btn btn-ghost">
+              <Link
+                onClick={(e) => handleLinkClick(e, "#features")}
+                href="#features"
+                className="btn btn-ghost"
+              >
                 Features
               </Link>
             </li>
             <li>
-              <Link href="/contact" className="btn btn-ghost">
+              <Link
+                onClick={(e) => handleLinkClick(e, "#contact")}
+                href="#contact"
+                className="btn btn-ghost"
+              >
                 Contact
               </Link>
             </li>
@@ -44,6 +92,46 @@ const Header: React.FC = () => {
               </a>
             </li>
           </ul>
+          {isMenuOpen && (
+            <ul className="fixed bg-black-primary top-20 left-0 w-full py-4">
+              <li>
+                <Link
+                  onClick={(e) => handleLinkClick(e, "#about")}
+                  href="#about"
+                  className="block px-4 py-2 text-white hover:bg-gray-800"
+                >
+                  About
+                </Link>
+              </li>
+              <li>
+                <Link
+                  onClick={(e) => handleLinkClick(e, "#features")}
+                  href="#features"
+                  className="block px-4 py-2 text-white hover:bg-gray-800"
+                >
+                  Features
+                </Link>
+              </li>
+              <li>
+                <Link
+                  onClick={(e) => handleLinkClick(e, "#contact")}
+                  href="#contact"
+                  className="block px-4 py-2 text-white hover:bg-gray-800"
+                >
+                  Contact
+                </Link>
+              </li>
+              <li>
+                <a
+                  href="https://github.com/g1mishra/SynapseStudy"
+                  className="block px-4 py-2 text-white hover:bg-gray-800"
+                  target="_blank"
+                >
+                  GitHub
+                </a>
+              </li>
+            </ul>
+          )}
         </nav>
       </header>
       <div className="h-20" />

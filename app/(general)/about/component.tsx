@@ -2,7 +2,7 @@ import { AboutSectionCreative } from "@/components/Icons";
 
 const AboutPage = () => {
   return (
-    <section className="bg-black-primary text-white mt-[15vh] md:mt-[25vh]">
+    <section className="bg-black-primary text-white mt-[15vh] md:mt-[25vh]" id="about">
       <div className="py-8 container mx-auto">
         <div className="container mx-auto px-4 text-center max-w-screen-lg">
           <p className="text-lg mb-4">
