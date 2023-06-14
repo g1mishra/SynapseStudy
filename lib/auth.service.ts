@@ -19,6 +19,14 @@ export function updateUserPref(payload: object): Promise<any> {
   return account.updatePrefs(payload);
 }
 
+export function updateName(name: string): Promise<any> {
+  return account.updateName(name);
+}
+
+export function updatePassword(password: string, oldPassword: string): Promise<any> {
+  return account.updatePassword(password, oldPassword);
+}
+
 export function logoutUser(): Promise<any> {
   return account.deleteSession("current");
 }
