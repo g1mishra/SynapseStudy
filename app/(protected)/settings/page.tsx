@@ -8,7 +8,6 @@ import { updateName, updatePassword, updateUserPref } from "@/lib/auth.service";
 import { bucketFilePath } from "@/utils/utils";
 import { toast } from "react-toastify";
 
-
 function GeneralTabComponent() {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const { currentUser, loading } = useAuth();
@@ -32,31 +31,33 @@ function GeneralTabComponent() {
       uploadFileToBucket(currentUser.$id, selectedImage, "assets")
         .then((uploadedFile) => {
           if (!uploadedFile) return;
-          const imagePath = bucketFilePath("assets", uploadedFile.$id)
+          const imagePath = bucketFilePath("assets", uploadedFile.$id);
           updateUserPref({
-            image: imagePath
+            image: imagePath,
           });
-          toast.success('Details updated successfully.')
+          toast.success("Details updated successfully.");
         })
         .catch((err) => {
-          toast.error('An unexpected error occured.')
-        })
+          toast.error("An unexpected error occured.");
+        });
       // Perform image upload logic here
     }
     if (name) {
       updateName(name);
-      toast.success('Details updated successfully.')
+      toast.success("Details updated successfully.");
     }
-
   };
 
   return (
-    <div className="w-full max-w-sm container mx-auto">
-      <div className="flex items-center mb-6">
-        <label htmlFor="avatar" className="w-1/3">
-          <Avatar width={60} height={60} imageSrc={currentUser?.prefs?.image} />
-        </label>
-        <div className="w-2/3">
+    <div className="w-full max-w-sm container px-6">
+      <div className="flex flex-col items-center">
+        <div className="mt-8">
+          <label htmlFor="avatar">
+            <Avatar
+              imageSrc={currentUser?.prefs?.image}
+              className="w-28 h-28 shrink-0"
+            />
+          </label>
           <input
             type="file"
             name="avatar"
@@ -64,28 +65,31 @@ function GeneralTabComponent() {
             className="hidden"
             onChange={handleImageChange}
           />
+        </div>
+        <div className="w-full">
+          <label
+            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            htmlFor="inline-full-email"
+          >
+            Email
+          </label>
           <input
-            className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             id="email"
             type="text"
             placeholder="Email"
             disabled
             value={currentUser?.email}
           />
-        </div>
-      </div>
-      <div className="md:flex md:items-center mb-6">
-        <div className="md:w-1/3">
+
           <label
-            className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
+            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             htmlFor="inline-full-name"
           >
             Name
           </label>
-        </div>
-        <div className="md:w-2/3">
           <input
-            className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+            className="bg-gray-50 border w-full border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             id="inline-full-name"
             type="text"
             placeholder={currentUser?.name}
@@ -93,58 +97,55 @@ function GeneralTabComponent() {
           />
         </div>
       </div>
-      <div className="md:flex md:items-center">
-        <div className="md:w-1/3"></div>
-        <div className="md:w-2/3">
-          <button
-            className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
-            type="button"
-            onClick={handleSubmit}
-          >
-            Save
-          </button>
-        </div>
+      <div className="mt-6">
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
+          type="button"
+          onClick={handleSubmit}
+        >
+          Save
+        </button>
       </div>
     </div>
-
-
   );
 }
 
-
 const SecurityTabComponent = () => {
-  const [oldPassword, setOldPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleSubmit = () => {
     // Validate the form inputs and perform the submission logic
     if (oldPassword && newPassword && confirmPassword) {
       if (newPassword === confirmPassword)
         updatePassword(newPassword, oldPassword)
-          .then(user => {
-            toast.success('Password updated.')
+          .then((user) => {
+            toast.success("Password updated.");
           })
-          .catch(err => {
+          .catch((err) => {
             toast.error(err?.message);
-          })
+          });
       else {
-        toast.error('Passwords do not match.')
+        toast.error("Passwords do not match.");
       }
     } else {
-      toast.error('Please input all fields.')
+      toast.error("Please input all fields.");
     }
   };
 
   return (
-    <div className="w-full max-w-xs mx-auto">
-      <form className="shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <div className="w-full max-w-xs mx-auto bg-black-tertiary shadow-md rounded mt-8">
+      <form className=" px-8 pt-6 pb-8 mb-4">
         <div className="mb-4">
-          <label className="block text-gray-100 text-sm font-bold mb-2" htmlFor="old-password">
+          <label
+            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            htmlFor="old-password"
+          >
             Current Password
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="bg-gray-50 border w-full border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             id="old-password"
             type="password"
             placeholder="Current Password"
@@ -153,11 +154,14 @@ const SecurityTabComponent = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-100 text-sm font-bold mb-2" htmlFor="new-password">
+          <label
+            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            htmlFor="new-password"
+          >
             New Password
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="bg-gray-50 border w-full border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             id="new-password"
             type="password"
             placeholder="New Password"
@@ -166,11 +170,14 @@ const SecurityTabComponent = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-100 text-sm font-bold mb-2" htmlFor="confirm-password">
+          <label
+            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            htmlFor="confirm-password"
+          >
             Confirm Password
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="bg-gray-50 border w-full border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             id="confirm-password"
             type="password"
             placeholder="Confirm Password"
@@ -180,7 +187,7 @@ const SecurityTabComponent = () => {
         </div>
         <div className="flex items-center justify-center">
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
             type="button"
             onClick={handleSubmit}
           >
@@ -196,21 +203,33 @@ export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState("general-tab");
 
   return (
-    <div className="container m-4">
+    <div className="container mt-28 mb-10 flex flex-col justify-center items-center">
       <ul className="flex">
         <li className="mb-px mr-1">
-          <a className={`text-white inline-block px-4 py-2 ${activeTab === 'general-tab' ? "border font-semibold" : ""}`} onClick={() => setActiveTab('general-tab')} href="#">General</a>
-
+          <a
+            className={`text-white inline-block px-4 py-2 ${
+              activeTab === "general-tab" ? "border font-semibold" : ""
+            }`}
+            onClick={() => setActiveTab("general-tab")}
+            href="#"
+          >
+            General
+          </a>
         </li>
         <li className="mr-1">
-          <a className={`text-white inline-block px-4 py-2 ${activeTab === 'security-tab' ? "border font-semibold" : ""}`} onClick={() => setActiveTab('security-tab')} href="#">Security</a>
-
+          <a
+            className={`text-white inline-block px-4 py-2 ${
+              activeTab === "security-tab" ? "border font-semibold" : ""
+            }`}
+            onClick={() => setActiveTab("security-tab")}
+            href="#"
+          >
+            Security
+          </a>
         </li>
-
       </ul>
-      {activeTab === 'general-tab' ? <GeneralTabComponent /> : ''}
-      {activeTab === 'security-tab' ? <SecurityTabComponent /> : ''}
-
+      {activeTab === "general-tab" ? <GeneralTabComponent /> : ""}
+      {activeTab === "security-tab" ? <SecurityTabComponent /> : ""}
     </div>
   );
 }
