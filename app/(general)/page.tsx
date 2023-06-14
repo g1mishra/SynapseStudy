@@ -15,26 +15,25 @@ export default async function Page() {
   // const data = await getData();
   return (
     <>
-      <main className="hero h-[calc(70vh)] bg-[#ffffff]">
+      <main className="hero h-[calc(70vh)] bg-[#ffffff] relative">
         <div className="hero-content text-center">
           <div className="max-w-screen-md">
             <h1 className="text-5xl font-bold text-[#F9762E]">Synapse Study</h1>
-            <p className="py-6">
-              Collaborative online learning platform for virtual study groups
-            </p>
+            <p className="py-6">Collaborative online learning platform for virtual study groups</p>
             {/* <CTAButton /> */}
           </div>
         </div>
+        <div className="absolute left-0 right-0 bottom-0 flex items-center justify-center translate-y-1/2">
+          <Image
+            src={bucketFilePath("assets", "6489efbe17d765d66735")}
+            width="700"
+            height="400"
+            alt="fancy-banner"
+            className="object-cover object-center"
+          />
+        </div>
       </main>
-      <div className="relative">
-        <Image
-          src={bucketFilePath("assets", "6489efbe17d765d66735")}
-          width={"600"}
-          height={"600"}
-          alt="fancy-banner"
-          className="absolute top-0 left-1/2 translate-x-1/2 -translate-y-1/2 inset-y-0"
-        />
-      </div>
+
       <AboutPage />
     </>
   );

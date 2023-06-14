@@ -1,8 +1,6 @@
 import { SVGProps } from "react";
 
-export const DashboardIcon = (
-  props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>
-) => {
+export const DashboardIcon = (props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) => {
   return (
     <svg
       {...props}
@@ -17,9 +15,7 @@ export const DashboardIcon = (
   );
 };
 
-export const StudyRoomsIcon = (
-  props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>
-) => {
+export const StudyRoomsIcon = (props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) => {
   return (
     <svg
       {...props}
@@ -34,9 +30,7 @@ export const StudyRoomsIcon = (
   );
 };
 
-export const ChatIcon = (
-  props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>
-) => {
+export const ChatIcon = (props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) => {
   return (
     <svg
       {...props}
@@ -55,9 +49,7 @@ export const ChatIcon = (
   );
 };
 
-export const CalendarIcon = (
-  props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>
-) => {
+export const CalendarIcon = (props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) => {
   return (
     <svg
       {...props}
@@ -72,9 +64,7 @@ export const CalendarIcon = (
   );
 };
 
-export const WhiteboardIcon = (
-  props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>
-) => {
+export const WhiteboardIcon = (props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) => {
   return (
     <svg
       {...props}
@@ -89,9 +79,7 @@ export const WhiteboardIcon = (
   );
 };
 
-export const SettingsIcon = (
-  props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>
-) => {
+export const SettingsIcon = (props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) => {
   return (
     <svg
       {...props}
@@ -110,9 +98,7 @@ export const SettingsIcon = (
   );
 };
 
-export const LogoutIcon = (
-  props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>
-) => {
+export const LogoutIcon = (props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) => {
   return (
     <svg
       {...props}
@@ -136,9 +122,7 @@ export const LogoutIcon = (
   );
 };
 
-export const ArrowRight = (
-  props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>
-) => {
+export const ArrowRight = (props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) => {
   return (
     <svg
       {...props}
@@ -159,9 +143,7 @@ export const ArrowRight = (
   );
 };
 
-export const AddGroup = (
-  props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>
-) => {
+export const AddGroup = (props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) => {
   return (
     <svg
       {...props}
@@ -182,9 +164,7 @@ export const AddGroup = (
   );
 };
 
-export const JoinGroup = (
-  props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>
-) => {
+export const JoinGroup = (props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) => {
   return (
     <svg
       {...props}
@@ -203,16 +183,9 @@ export const JoinGroup = (
   );
 };
 
-export const BackgroundCurveSvg = (
-  props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>
-) => {
+export const BackgroundCurveSvg = (props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) => {
   return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 592 294"
-      fill="none"
-    >
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 592 294" fill="none">
       <g filter="url(#a)">
         <path
           d="M319 154c-87.6-29.2-92.833-104.834-84.5-139v-2.5c-65.5.166-199.2.4-210 0-10.8-.4-12.5 11.833-12 18 .333 73.833.8 224.3 0 235.5-.8 11.2 7.667 15 12 15.5h555c-8.167-1-33.3-10.5-68.5-40.5-44-37.5-82.5-50.5-192-87Z"
@@ -240,20 +213,14 @@ export const BackgroundCurveSvg = (
           <feComposite in2="hardAlpha" operator="out" />
           <feColorMatrix values="0 0 0 0 0.270588 0 0 0 0 0.388235 0 0 0 0 0.454902 0 0 0 0.25 0" />
           <feBlend in2="BackgroundImageFix" result="effect1_dropShadow_35_70" />
-          <feBlend
-            in="SourceGraphic"
-            in2="effect1_dropShadow_35_70"
-            result="shape"
-          />
+          <feBlend in="SourceGraphic" in2="effect1_dropShadow_35_70" result="shape" />
         </filter>
       </defs>
     </svg>
   );
 };
 
-export const FlowerIllustration = (
-  props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>
-) => {
+export const FlowerIllustration = (props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) => {
   return (
     <svg
       {...props}
@@ -303,9 +270,7 @@ export const FlowerIllustration = (
   );
 };
 
-export const PotIllustration = (
-  props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>
-) => {
+export const PotIllustration = (props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) => {
   return (
     <svg
       {...props}
@@ -349,9 +314,7 @@ export const PotIllustration = (
   );
 };
 
-export const Logo = (
-  props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>
-) => {
+export const Logo = (props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) => {
   return (
     <svg
       {...props}
@@ -366,11 +329,7 @@ export const Logo = (
         stroke="#fff"
         strokeWidth=".86"
       />
-      <path
-        d="M1 7.076v22.707L29.602 44l26.55-14.217V7.076"
-        stroke="#fff"
-        strokeWidth=".86"
-      />
+      <path d="M1 7.076v22.707L29.602 44l26.55-14.217V7.076" stroke="#fff" strokeWidth=".86" />
       <path
         d="M31.322 21.952v3.418h-.362c-.277-1.073-.635-1.804-1.073-2.19-.431-.388-.983-.581-1.654-.581-.512 0-.924.135-1.238.405-.314.27-.471.57-.471.898 0 .41.116.76.35 1.052.227.3.687.617 1.38.953l1.6.778c1.482.723 2.224 1.676 2.224 2.859 0 .913-.347 1.65-1.041 2.213-.687.555-1.457.832-2.312.832-.613 0-1.314-.11-2.103-.328a2.136 2.136 0 0 0-.591-.11c-.168 0-.3.095-.395.285h-.361v-3.582h.361c.205 1.022.596 1.793 1.172 2.311.577.519 1.224.778 1.94.778.503 0 .912-.146 1.226-.438.322-.3.482-.658.482-1.074 0-.504-.179-.927-.537-1.27-.35-.344-1.055-.778-2.114-1.304s-1.753-1-2.081-1.424c-.329-.416-.493-.942-.493-1.578 0-.825.281-1.515.843-2.07.57-.555 1.304-.833 2.202-.833.395 0 .873.084 1.435.252.373.11.621.165.745.165a.436.436 0 0 0 .274-.077c.066-.051.142-.164.23-.34h.362Z"
         fill="#fff"
@@ -397,9 +356,7 @@ export const Logo = (
   );
 };
 
-export const AboutSectionCreative = (
-  props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>
-) => {
+export const AboutSectionCreative = (props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) => {
   return (
     <svg
       {...props}
@@ -493,15 +450,8 @@ export const AboutSectionCreative = (
           <feGaussianBlur stdDeviation="4.298" />
           <feComposite in2="hardAlpha" operator="out" />
           <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0" />
-          <feBlend
-            in2="BackgroundImageFix"
-            result="effect1_dropShadow_237_669"
-          />
-          <feBlend
-            in="SourceGraphic"
-            in2="effect1_dropShadow_237_669"
-            result="shape"
-          />
+          <feBlend in2="BackgroundImageFix" result="effect1_dropShadow_237_669" />
+          <feBlend in="SourceGraphic" in2="effect1_dropShadow_237_669" result="shape" />
         </filter>
         <filter
           id="b"
@@ -522,15 +472,8 @@ export const AboutSectionCreative = (
           <feGaussianBlur stdDeviation="4.298" />
           <feComposite in2="hardAlpha" operator="out" />
           <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0" />
-          <feBlend
-            in2="BackgroundImageFix"
-            result="effect1_dropShadow_237_669"
-          />
-          <feBlend
-            in="SourceGraphic"
-            in2="effect1_dropShadow_237_669"
-            result="shape"
-          />
+          <feBlend in2="BackgroundImageFix" result="effect1_dropShadow_237_669" />
+          <feBlend in="SourceGraphic" in2="effect1_dropShadow_237_669" result="shape" />
         </filter>
       </defs>
     </svg>
