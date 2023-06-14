@@ -19,7 +19,10 @@ export function useAuth(redirectTo = true) {
   } = useSWR("/auth", getCurrentUser, {
     onError: (error) => {
       console.error("Failed to fetch current user:", error);
-      if (redirectTo) router.push("/auth");
+      if (redirectTo) {
+        console.log("Redirecting to login page");
+        router.push("/auth");
+      }
     },
     revalidateOnFocus: false, // Disable revalidation on focus to prevent unnecessary fetches
     shouldRetryOnError: false, // Disable retrying on error to prevent infinite loop
