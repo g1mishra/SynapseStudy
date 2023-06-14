@@ -54,7 +54,7 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="card relative flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+    <div className="card relative md:shrink-0 w-full max-w-full md:max-w-sm shadow-2xl bg-base-100">
       <div className="card-body">
         {variant === "login" ? (
           <Form handleSubmit={handleLoginSubmit} variant={variant} loading={loading} />
