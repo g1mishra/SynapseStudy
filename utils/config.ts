@@ -11,6 +11,7 @@ export const Server = {
   channelsCollectionId: process.env.NEXT_PUBLIC_CHANNEL_COLLECTION_ID ?? "",
   messagesCollectionId: process.env.NEXT_PUBLIC_MESSAGES_COLLECTION_ID ?? "",
   joinRequestsCollectionId: process.env.NEXT_PUBLIC_JOIN_REQUESTS_COLLECTION_ID ?? "",
+  meetingsCollecctionId: process.env.NEXT_PUBLIC_MEETINGS_COLLECTION_ID ?? "",
 
   // secret keys
   documentReadKey: process.env.APPWRITE_DOCUMENT_READ_KEY ?? "",
