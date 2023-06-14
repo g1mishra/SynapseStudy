@@ -4,11 +4,11 @@ import Image from "next/image";
 
 const CTABanner = () => {
   return (
-    <main className="bg-white text-black mt-[15vh] md:mt-[25vh]">
-      <section className="py-8 container mx-auto">
+    <section className="bg-white text-black mt-[5vh]">
+      <div className="py-8 container mx-auto">
         <div className="flex flex-col md:flex-row place-content-around">
-          <div className="text-center md:text-left">
-            <h1 className="text-4xl leading-relaxed text-[#F9762E] font-semibold mb-4">
+          <div className="text-center md:text-left flex flex-col items-center sm:items-start">
+            <h1 className="text-2xl md:text-4xl leading-relaxed text-[#F9762E] font-semibold mb-4">
               THIS IS SIMPLY THE <br /> MOST AWESOME
               <br /> PLATFORM:
             </h1>
@@ -32,8 +32,8 @@ const CTABanner = () => {
             <CTAButton />
           </div>
         </div>
-      </section>
-    </main>
+      </div>
+    </section>
   );
 };
 

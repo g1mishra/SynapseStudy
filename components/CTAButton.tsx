@@ -17,10 +17,7 @@ export default function CTAButton() {
 
   return (
     <>
-      <button
-        className="btn bg-[#F9762E] mt-5 border-none w-32"
-        onClick={handleCTA}
-      >
+      <button className="btn bg-[#F9762E] mt-5 border-none w-32" onClick={handleCTA}>
         Get Started
       </button>
     </>

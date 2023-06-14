@@ -6,18 +6,10 @@ const Header: React.FC = () => {
     <>
       <header className="navbar bg-black-primary text-white fixed h-20 z-[60]">
         <nav className="container mx-auto px-4 py-2 flex items-center justify-between">
-          <Link
-            href="/"
-            className="text-xl font-bold flex justify-center items-center gap-5"
-          >
+          <Link href="/" className="text-xl font-bold flex justify-center items-center gap-5">
             <Logo /> SynapseStudy
           </Link>
           <ul className="flex space-x-4">
-            {/* <li>
-              <Link href="/study-rooms" className="btn btn-ghost">
-                Study Rooms
-              </Link>
-            </li> */}
             <li>
               <Link href="/about" className="btn btn-ghost">
                 About

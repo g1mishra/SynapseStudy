@@ -2,10 +2,9 @@ import { AboutSectionCreative } from "@/components/Icons";
 
 const AboutPage = () => {
   return (
-    <main className="bg-black-primary text-white mt-[15vh] md:mt-[25vh]">
-      <section className="py-8 container mx-auto">
-        <div className="container mx-auto px-4 text-center">
-          {/* <h1 className="text-4xl font-bold mb-4">About SynapseStudy</h1> */}
+    <section className="bg-black-primary text-white mt-[15vh] md:mt-[25vh]">
+      <div className="py-8 container mx-auto">
+        <div className="container mx-auto px-4 text-center max-w-screen-lg">
           <p className="text-lg mb-4">
             SynapseStudy is a platform designed to enhance collaboration and knowledge sharing among
             students. It provides a range of features to facilitate virtual study rooms, real-time
@@ -21,8 +20,8 @@ const AboutPage = () => {
             <AboutSectionCreative />
           </div>
         </div>
-      </section>
-    </main>
+      </div>
+    </section>
   );
 };
 
