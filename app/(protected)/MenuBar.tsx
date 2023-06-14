@@ -47,16 +47,10 @@ const routes = [
 interface MenuBarProps {
   logout: () => void;
   className?: string;
-  openMenu: boolean;
-  setOpenMenu: any;
+  handleMenuIconClick?: (name: string) => void;
 }
 
-export default function MenuBar({
-  logout,
-  className,
-  openMenu,
-  setOpenMenu,
-}: MenuBarProps) {
+export default function MenuBar({ logout, className, handleMenuIconClick }: MenuBarProps) {
   return (
     <div
       className={cn(
@@ -73,7 +67,7 @@ export default function MenuBar({
             href={route.href || `#${route.name}`}
             key={route.name}
             className="cursor-pointer"
-            onClick={() => setOpenMenu(!openMenu)}
+            onClick={() => handleMenuIconClick?.(route.name)}
           >
             {(isActive) => (
               <div
@@ -88,10 +82,7 @@ export default function MenuBar({
           </ActiveLink>
         ))}
       </div>
-      <div
-        className="flex items-center justify-center mt-40 cursor-pointer"
-        onClick={logout}
-      >
+      <div className="flex items-center justify-center cursor-pointer" onClick={logout}>
         <LogoutIcon />
       </div>
     </div>

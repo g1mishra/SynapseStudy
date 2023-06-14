@@ -14,7 +14,7 @@ const ChatRoomHeader = ({ chatRoom }: ChatRoomHeaderProps) => {
         <Avatar imageSrc={chatRoom?.image} alt={chatRoom.name} width={48} height={48} />
         <div>
           <h2 className="text-lg font-semibold text-white uppercase">#{chatRoom.name}</h2>
-          <p className="text-sm text-gray-400 whitespace-nowrap overflow-ellipsis">{chatRoom.description}</p>
+          <p className="text-sm text-gray-400 line-clamp-1">{chatRoom.description}</p>
         </div>
       </div>
       <div className="h-0.25 bg-[#676683]" />

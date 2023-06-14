@@ -7,6 +7,7 @@ import useParticipants from "@/hooks/useParticipants";
 import useStudyRoomDetailsById from "@/hooks/useStudyRoomDetailsById";
 import { createChannel, leaveStudyRoom } from "@/lib/studyrooms.service";
 import { ChannelI } from "@/types/study-room";
+import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import { toast } from "react-toastify";
 interface StudyRoomPageProps {
@@ -16,15 +17,21 @@ interface StudyRoomPageProps {
 }
 
 export default function Page({ params: { id: studyRoomId } }: StudyRoomPageProps) {
-  const [open, setOpen] = useState(false);
+  const router = useRouter();
   const { currentUser } = useAuth();
+  const [open, setOpen] = useState(false);
   const { data, mutate, isLoading } = useStudyRoomDetailsById(studyRoomId);
   const { isLoading: loading } = useParticipants(studyRoomId);
   const [successfullyCreated, setSuccessfullyCreated] = useState(false);
 
-  const handleLeaveClick = () => {
-    console.log("leave the study room");
-    leaveStudyRoom(studyRoomId, currentUser?.$id);
+  const handleLeaveClick = async () => {
+    try {
+      await leaveStudyRoom(studyRoomId, currentUser?.$id);
+      router.push("/study-rooms");
+      toast.success("Successfully left the study room");
+    } catch (error: any) {
+      toast.error(error.message);
+    }
   };
 
   const onClose = () => {

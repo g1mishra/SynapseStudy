@@ -2,6 +2,7 @@
 
 import { getCurrentUser, loginUser, logoutUser } from "@/lib/auth.service";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 import useSWR, { mutate } from "swr";
 
 interface AuthHookProps {
@@ -18,7 +19,10 @@ export function useAuth(redirectTo = true) {
   } = useSWR("/auth", getCurrentUser, {
     onError: (error) => {
       console.error("Failed to fetch current user:", error);
-      if (redirectTo) router.push("/auth");
+      if (redirectTo) {
+        console.log("Redirecting to login page");
+        router.push("/auth");
+      }
     },
     revalidateOnFocus: false, // Disable revalidation on focus to prevent unnecessary fetches
     shouldRetryOnError: false, // Disable retrying on error to prevent infinite loop
@@ -34,10 +38,11 @@ export function useAuth(redirectTo = true) {
   const logout = async () => {
     try {
       await logoutUser();
-      mutate("/auth", null);
       router.push("/auth");
+      mutate("/auth", null);
     } catch (err) {
       console.log(err);
+      toast.error("Failed to logout");
     }
   };
 

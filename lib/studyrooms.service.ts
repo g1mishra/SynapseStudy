@@ -16,11 +16,15 @@ const userLinksCollectionID = Server.userLinksCollectionId;
 export type GetStudyRoomsResponse = Models.DocumentList<StudyRoomModel>;
 
 export interface GetStudyRoomResponse extends StudyRoomModel {
-  userLinks: UserLinksModel[];
+  // userLinks: UserLinksModel[];
   channels: ChannelModel[];
 }
 
-export async function getAllStudyRooms(userId: string): Promise<Models.Document[]> {
+export async function getAllStudyRooms(userId: string, q?: string): Promise<Models.Document[]> {
+  const query = [];
+  if (q && q !== "") {
+    query.push(Query.search("name", q));
+  }
   const userLinks = await appwriteSDKProvider.database.listDocuments(
     Server.dbId,
     userLinksCollectionID,
@@ -34,7 +38,7 @@ export async function getAllStudyRooms(userId: string): Promise<Models.Document[
   }
 
   return (
-    await appwriteSDKProvider.database.listDocuments(Server.dbId, studyRoomsCollectionID)
+    await appwriteSDKProvider.database.listDocuments(Server.dbId, studyRoomsCollectionID, query)
   ).documents.filter((room) => !studyRoomIds.includes(room.$id));
 }
 
@@ -54,15 +58,16 @@ export async function getStudyRoomByUserId(userId: string): Promise<GetStudyRoom
 }
 
 export async function getStudyRoomById(studyRoomId: string): Promise<GetStudyRoomResponse> {
-  const [studyRoom, userLinks, channels] = await Promise.all([
+  // const [studyRoom, userLinks, channels] = await Promise.all([
+  const [studyRoom, channels] = await Promise.all([
     appwriteSDKProvider.database.getDocument<StudyRoomModel>(
       Server.dbId,
       studyRoomsCollectionID,
       studyRoomId
     ),
-    appwriteSDKProvider.database.listDocuments<UserLinksModel>(Server.dbId, userLinksCollectionID, [
-      Query.equal("study_room_id", studyRoomId),
-    ]),
+    // appwriteSDKProvider.database.listDocuments<UserLinksModel>(Server.dbId, userLinksCollectionID, [
+    //   Query.equal("study_room_id", studyRoomId),
+    // ]),
     appwriteSDKProvider.database.listDocuments<ChannelModel>(
       Server.dbId,
       Server.channelsCollectionId,
@@ -72,7 +77,7 @@ export async function getStudyRoomById(studyRoomId: string): Promise<GetStudyRoo
 
   return {
     ...studyRoom,
-    userLinks: userLinks.documents,
+    // userLinks: userLinks.documents,
     channels: channels.documents,
   };
 }

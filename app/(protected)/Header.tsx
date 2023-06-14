@@ -4,22 +4,19 @@ import Avatar from "@/components/Avatar";
 import Search from "@/components/Search";
 import { cn } from "@/utils/utils";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Dispatch, SetStateAction } from "react";
 
 interface HeaderProps {
   currentUser: any;
   className?: string;
-  openMenu: any;
-  setOpenMenu: any;
+  setOpenMenu?: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function Header({
-  currentUser,
-  className,
-  openMenu,
-  setOpenMenu,
-}: HeaderProps) {
+export default function Header({ currentUser, className, setOpenMenu }: HeaderProps) {
+  const router = useRouter();
   function handleSubmit(query: string) {
-    console.log("Search query:", query);
+    router.push(`/study-rooms?q=${query}`);
   }
 
   return (
@@ -31,8 +28,10 @@ export default function Header({
         )}
       >
         <svg
-          onClick={() => setOpenMenu(!openMenu)}
-          className="w-8 h-full cursor-pointer md:hidden"
+          onClick={() => {
+            if (setOpenMenu) setOpenMenu((prev) => !prev);
+          }}
+          className="w-8 shrink-0 h-full cursor-pointer md:hidden"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
