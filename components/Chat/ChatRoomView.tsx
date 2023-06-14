@@ -27,7 +27,7 @@ export function ChatRoomView({ roomInfo, messages }: ChatRoomViewProps) {
   }, [messages]);
 
   if (isLoading || loading) {
-    return Loading;
+    return <Loading />;
   }
 
   return (
