@@ -50,7 +50,7 @@ const Placeholder = (props: AvatarProps) => {
         width: props?.width ?? 48,
         height: props?.height ?? 48,
       }}
-      className={cn("rounded-full bg-gray-500 mr-4", props?.className)}
+      className={cn("rounded-full bg-gray-500 mr-4 shrink-0", props?.className)}
     >
       <div className="flex items-center justify-center h-full text-white text-xl font-bold">
         {props?.alt?.charAt(0).toUpperCase()}

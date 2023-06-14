@@ -23,3 +23,9 @@
 body {
   @apply bg-black-primary;
 }
+body .my-loader {
+  @apply hidden;
+}
+body .my-loader:nth-child(1) {
+  @apply block;
+}

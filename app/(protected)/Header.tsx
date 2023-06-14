@@ -4,6 +4,7 @@ import Avatar from "@/components/Avatar";
 import Search from "@/components/Search";
 import { cn } from "@/utils/utils";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction } from "react";
 
 interface HeaderProps {
@@ -13,8 +14,9 @@ interface HeaderProps {
 }
 
 export default function Header({ currentUser, className, setOpenMenu }: HeaderProps) {
+  const router = useRouter();
   function handleSubmit(query: string) {
-    console.log("Search query:", query);
+    router.push(`/study-rooms?q=${query}`);
   }
 
   return (

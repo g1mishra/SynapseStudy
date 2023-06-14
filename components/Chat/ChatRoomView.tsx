@@ -6,6 +6,7 @@ import React, { useEffect, useRef } from "react";
 import ChatBubble from "./ChatBubble";
 import ChatRoomHeader from "./ChatRoomHeader";
 import ChatRoomInput from "./ChatRoomInput";
+import Loading from "../Loading";
 
 interface ChatRoomViewProps {
   roomInfo: ChatChannel;
@@ -14,9 +15,9 @@ interface ChatRoomViewProps {
 
 export function ChatRoomView({ roomInfo, messages }: ChatRoomViewProps) {
   const { id: studyRoomId } = useParams();
-  const { currentUser } = useAuth();
+  const { currentUser, loading } = useAuth();
   const chatContainerRef = useRef<HTMLDivElement>(null);
-  const { user: participants } = useParticipants(studyRoomId);
+  const { user: participants, isLoading } = useParticipants(studyRoomId);
 
   useEffect(() => {
     const chatContainer = chatContainerRef.current;
@@ -25,11 +26,15 @@ export function ChatRoomView({ roomInfo, messages }: ChatRoomViewProps) {
     chatContainer.scrollTop = chatContainer.scrollHeight;
   }, [messages]);
 
+  if (isLoading || loading) {
+    return Loading;
+  }
+
   return (
     <div className="h-full w-full flex flex-col justify-between">
       <ChatRoomHeader chatRoom={roomInfo} />
       <div
-        className="py-4 px-6 m-2 flex-1 hidden_scrollbar overflow-y-auto text-white"
+        className="py-4 md:px-6 m-2 flex-1 hidden_scrollbar overflow-y-auto text-white"
         style={{
           overflowAnchor: "none",
         }}

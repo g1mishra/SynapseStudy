@@ -3,16 +3,16 @@
 import Loading from "@/components/Loading";
 import { useAuth } from "@/hooks/useAuth";
 import { getAllStudyRooms } from "@/lib/studyrooms.service";
-import { useMemo } from "react";
-import useSWR from "swr";
+import { useEffect, useMemo } from "react";
+import useSWR, { mutate } from "swr";
 import Header from "../Header";
 import StudyRooms from "./StudyRooms";
 
-const StudyRoomPage = () => {
+const StudyRoomPage = ({ searchParams }: { searchParams: any }) => {
   const { currentUser } = useAuth();
   const { data, error } = useSWR(
-    currentUser?.$id ? "all-study-rooms" : null,
-    async () => await getAllStudyRooms(currentUser?.$id),
+    currentUser?.$id ? `all-study-rooms?q=${searchParams?.q}` : null,
+    async () => await getAllStudyRooms(currentUser?.$id, searchParams?.q),
     {
       revalidateOnFocus: false,
     }

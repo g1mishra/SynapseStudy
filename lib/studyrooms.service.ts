@@ -20,7 +20,11 @@ export interface GetStudyRoomResponse extends StudyRoomModel {
   channels: ChannelModel[];
 }
 
-export async function getAllStudyRooms(userId: string): Promise<Models.Document[]> {
+export async function getAllStudyRooms(userId: string, q?: string): Promise<Models.Document[]> {
+  const query = [];
+  if (q && q !== "") {
+    query.push(Query.search("name", q));
+  }
   const userLinks = await appwriteSDKProvider.database.listDocuments(
     Server.dbId,
     userLinksCollectionID,
@@ -34,7 +38,7 @@ export async function getAllStudyRooms(userId: string): Promise<Models.Document[
   }
 
   return (
-    await appwriteSDKProvider.database.listDocuments(Server.dbId, studyRoomsCollectionID)
+    await appwriteSDKProvider.database.listDocuments(Server.dbId, studyRoomsCollectionID, query)
   ).documents.filter((room) => !studyRoomIds.includes(room.$id));
 }
 

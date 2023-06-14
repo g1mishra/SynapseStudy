@@ -46,9 +46,9 @@ export default function Dashboard() {
       <Header currentUser={currentUser} className="hidden md:flex" />
       <div className="flex flex-col-reverse md:flex-row gap-y-6 gap-x-16 md:pl-6">
         {/* left  */}
-        <div className="w-full md:w-1/2 flex gap-y-6 gap-x-8 items-center justify-center">
+        <div className="w-full md:w-1/2 flex gap-y-6 gap-x-8 items-center justify-center flex-wrap">
           <div
-            className="w-52 h-52 flex flex-col justify-between flex-1 bg-orange shadow-lg rounded-lg p-7 cursor-pointer"
+            className="w-full sm:w-52 h-52 flex flex-col justify-between sm:flex-1 bg-orange shadow-lg rounded-lg p-7 cursor-pointer"
             onClick={() => setOpen(true)}
           >
             <AddGroup />
@@ -57,7 +57,7 @@ export default function Dashboard() {
               <p className="text-white">set up new room</p>
             </div>
           </div>
-          <div className="w-52 h-52 flex flex-col flex-1 justify-between bg-purple shadow-lg rounded-lg p-7 cursor-pointer">
+          <div className="w-full sm:w-52 h-52 flex flex-col sm:flex-1 justify-between bg-purple shadow-lg rounded-lg p-7 cursor-pointer">
             <JoinGroup />
             <div>
               <p className="text-white text-lg font-semibold">Join Room</p>
@@ -68,7 +68,7 @@ export default function Dashboard() {
 
         {/* right */}
         <div className="w-full md:w-1/2 flex flex-col md:items-end min-h-[170px]">
-          <div className="flex-1 w-full md:max-w-md h-52 rounded-lg bg-bayoux relative overflow-hidden">
+          <div className="sm:flex-1 w-full md:max-w-md h-52 rounded-lg bg-bayoux relative overflow-hidden">
             <BackgroundCurveSvg className="absolute -left-14  h-60 -top-4 w-auto" />
             <div className="absolute flex items-center left-6 inset-y-0 ">
               <Clock />

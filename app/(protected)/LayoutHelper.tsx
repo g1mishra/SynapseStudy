@@ -3,7 +3,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { cn } from "@/utils/utils";
 import { usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Header from "./Header";
 import MenuBar from "./MenuBar";
 import RenderSidebar from "./RenderSidebar";
@@ -15,8 +15,6 @@ export default function LayoutHelper({ children }: { children: React.ReactNode }
   const matches = useMediaQuery("(min-width: 768px)");
   const [sidebarLevel, setSidebarLevel] = useState(0);
 
-  const [shoudlRenderSidebar, setShouldRenderSidebar] = useState(false);
-
   const isStudyRoom = pathname.includes("/study-rooms");
 
   const handleMenuIconClick = (name: string) => {
@@ -27,11 +25,6 @@ export default function LayoutHelper({ children }: { children: React.ReactNode }
     setOpenMenu((prev) => !prev);
   };
 
-  useEffect(() => {
-    setShouldRenderSidebar(true);
-  }, [matches]);
-
-  if (!shoudlRenderSidebar) return null;
   return (
     <>
       {matches && <MenuBar logout={logout} />}
@@ -58,7 +51,7 @@ export default function LayoutHelper({ children }: { children: React.ReactNode }
           onClick={() => openMenu && setOpenMenu(false)}
         >
           <Header
-            className="flex !py-6 px-4 pb-4 max-w-full sticky top-0 z-10 bg-black-primary"
+            className="flex !py-4 px-4 pb-4 max-w-full sticky top-0 z-10 bg-black-primary"
             currentUser={currentUser}
             setOpenMenu={setOpenMenu}
           />
