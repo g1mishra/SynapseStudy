@@ -29,3 +29,7 @@ body .my-loader {
 body .my-loader:nth-child(1) {
   @apply block;
 }
+
+* {
+  scroll-behavior: smooth;
+}

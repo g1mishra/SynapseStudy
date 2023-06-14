@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 const ContactForm = () => {
   const [name, setName] = useState("");
@@ -10,7 +11,6 @@ const ContactForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Add your form submission logic here, such as sending the form data to a server or API
 
     // Simulate form submission delay
     setIsSubmitting(true);
@@ -20,51 +20,46 @@ const ContactForm = () => {
       setMessage("");
       setIsSubmitting(false);
     }, 2000);
+    toast.success("Message sent successfully!");
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="text-black-tertiary">
       <div className="form-control">
-        <label htmlFor="name" className="label">
-          <span className="label-text">Name</span>
-        </label>
         <input
           type="text"
           id="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="input input-bordered"
+          className="input input-bordered rounded-none my-2 bg-[#E2E2E2]"
+          placeholder="Your name"
           required
         />
       </div>
       <div className="form-control">
-        <label htmlFor="email" className="label">
-          <span className="label-text">Email</span>
-        </label>
         <input
           type="email"
           id="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="input input-bordered"
+          className="input input-bordered rounded-none my-2 bg-[#E2E2E2]"
+          placeholder="Your email"
           required
         />
       </div>
       <div className="form-control">
-        <label htmlFor="message" className="label">
-          <span className="label-text">Message</span>
-        </label>
         <textarea
           id="message"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          className="input input-bordered"
-          rows={4}
+          className="textarea input-bordered rounded-none my-2 bg-[#E2E2E2]"
+          placeholder="Type your message here.."
+          rows={6}
           required
         />
       </div>
       <div className="form-control mt-6">
-        <button type="submit" className="btn" disabled={isSubmitting}>
+        <button type="submit" className="btn bg-purple max-w-max" disabled={isSubmitting}>
           {isSubmitting ? "Submitting..." : "Submit"}
         </button>
       </div>
