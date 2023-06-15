@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     title: "SynapseStudy - Collaborative Online Learning Platform",
     description: "SynapseStudy - Collaborative online learning platform for virtual study groups",
     images: [
-      "https://cloud.appwrite.io/console/project-6487ff1a54c5fa1557a7/storage/bucket-assets/file-648aa9eb048925bfad0e",
+      "https://cloud.appwrite.io/v1/storage/buckets/assets/files/648aa9eb048925bfad0e/view?project=6487ff1a54c5fa1557a7",
     ],
   },
 };
