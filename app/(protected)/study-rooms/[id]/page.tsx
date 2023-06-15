@@ -78,7 +78,7 @@ export default function Page({ params: { id: studyRoomId } }: StudyRoomPageProps
   }
 
   return (
-    <div className="w-full flex flex-col gap-8 justify-center p-8 text-white">
+    <div className="w-full flex flex-col gap-8 justify-center p-8 text-white overflow-y-auto hidden_scrollbar">
       <div>
         <h1 className="text-center text-2xl font-bold">{data?.name}</h1>
         <p className="text-center mt-2">{data?.subject}</p>
@@ -96,23 +96,23 @@ export default function Page({ params: { id: studyRoomId } }: StudyRoomPageProps
           Create a new channel
         </button>
       </div>
-
-      <div className="flex flex-col flex-wrap">
-        <h1 className="text-xl mb-4">Video Meetings</h1>
-        {notification &&
-          notification.documents.length > 0 &&
-          notification.documents.map((doc) => {
+      {notification && notification.documents.length > 0 && (
+        <div className="flex flex-col flex-wrap">
+          <h1 className="text-xl mb-4">Video Meetings</h1>
+          {notification.documents.map((doc) => {
             return (
               <SquareCard
                 className="shrink-0 min-w-[250px]"
                 key={doc.$id}
                 name={doc.name}
                 subject={doc.subject}
-                to={`/study-rooms/${studyRoomId}/meet/${doc.$id}`}
+                to={`meeting/${doc.$id}`}
               />
             );
           })}
-      </div>
+        </div>
+      )}
+
       <CreateChannelModal
         open={open}
         onClose={onClose}
