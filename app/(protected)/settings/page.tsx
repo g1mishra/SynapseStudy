@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, ChangeEvent, FormEvent } from "react";
 import Avatar from "@/components/Avatar";
-import { uploadFileToBucket } from "@/lib/file-upload.service";
 import { useAuth } from "@/hooks/useAuth";
 import { updateName, updatePassword, updateUserPref } from "@/lib/auth.service";
+import { uploadFileToBucket } from "@/lib/file-upload.service";
 import { bucketFilePath } from "@/utils/utils";
+import { useState } from "react";
 import { toast } from "react-toastify";
+import Notifications from "./Notifications";
 
 function GeneralTabComponent() {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -49,14 +50,11 @@ function GeneralTabComponent() {
   };
 
   return (
-    <div className="w-full max-w-sm container px-6">
+    <div className="w-full max-w-md container px-6">
       <div className="flex flex-col items-center">
-        <div className="mt-8">
+        <div className="mt-10">
           <label htmlFor="avatar">
-            <Avatar
-              imageSrc={currentUser?.prefs?.image}
-              className="w-28 h-28 shrink-0"
-            />
+            <Avatar imageSrc={currentUser?.prefs?.image} className="w-28 h-28 shrink-0" />
           </label>
           <input
             type="file"
@@ -66,35 +64,39 @@ function GeneralTabComponent() {
             onChange={handleImageChange}
           />
         </div>
-        <div className="w-full">
-          <label
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            htmlFor="inline-full-email"
-          >
-            Email
-          </label>
-          <input
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            id="email"
-            type="text"
-            placeholder="Email"
-            disabled
-            value={currentUser?.email}
-          />
+        <div className="w-full flex flex-col gap-y-4">
+          <div className="mt-4">
+            <label
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              htmlFor="inline-full-email"
+            >
+              Email
+            </label>
+            <input
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              id="email"
+              type="text"
+              placeholder="Email"
+              disabled
+              value={currentUser?.email}
+            />
+          </div>
 
-          <label
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            htmlFor="inline-full-name"
-          >
-            Name
-          </label>
-          <input
-            className="bg-gray-50 border w-full border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            id="inline-full-name"
-            type="text"
-            placeholder={currentUser?.name}
-            onChange={handleNameChange}
-          />
+          <div className="mt-4">
+            <label
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              htmlFor="inline-full-name"
+            >
+              Name
+            </label>
+            <input
+              className="bg-gray-50 border w-full border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              id="inline-full-name"
+              type="text"
+              placeholder={currentUser?.name}
+              onChange={handleNameChange}
+            />
+          </div>
         </div>
       </div>
       <div className="mt-6">
@@ -135,9 +137,9 @@ const SecurityTabComponent = () => {
   };
 
   return (
-    <div className="w-full max-w-xs mx-auto bg-black-tertiary shadow-md rounded mt-8">
-      <form className=" px-8 pt-6 pb-8 mb-4">
-        <div className="mb-4">
+    <div className="w-full max-w-md mx-auto px-6 mt-12">
+      <form className="pt-6 pb-8 mb-4">
+        <div className=" mb-6">
           <label
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             htmlFor="old-password"
@@ -153,7 +155,7 @@ const SecurityTabComponent = () => {
             onChange={(e) => setOldPassword(e.target.value)}
           />
         </div>
-        <div className="mb-4">
+        <div className=" mb-6">
           <label
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             htmlFor="new-password"
@@ -169,7 +171,7 @@ const SecurityTabComponent = () => {
             onChange={(e) => setNewPassword(e.target.value)}
           />
         </div>
-        <div className="mb-4">
+        <div className=" mb-6">
           <label
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             htmlFor="confirm-password"
@@ -203,7 +205,7 @@ export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState("general-tab");
 
   return (
-    <div className="container mt-28 mb-10 flex flex-col justify-center items-center">
+    <div className="w-full mx-auto container mt-2 sm:mt-28 mb-10 flex flex-col justify-center items-center">
       <ul className="flex">
         <li className="mb-px mr-1">
           <a
@@ -227,9 +229,21 @@ export default function SettingsPage() {
             Security
           </a>
         </li>
+        <li className="mr-1">
+          <a
+            className={`text-white inline-block px-4 py-2 ${
+              activeTab === "notifications-tab" ? "border font-semibold" : ""
+            }`}
+            onClick={() => setActiveTab("notifications-tab")}
+            href="#"
+          >
+            Notifications
+          </a>
+        </li>
       </ul>
       {activeTab === "general-tab" ? <GeneralTabComponent /> : ""}
       {activeTab === "security-tab" ? <SecurityTabComponent /> : ""}
+      {activeTab === "notifications-tab" ? <Notifications /> : ""}
     </div>
   );
 }
