@@ -24,14 +24,14 @@ const routes = [
     href: "/study-rooms",
     icon: <StudyRoomsIcon />,
   },
-  {
-    name: "chat",
-    icon: <ChatIcon />,
-  },
-  {
-    name: "calendar",
-    icon: <CalendarIcon />,
-  },
+  // {
+  //   name: "chat",
+  //   icon: <ChatIcon />,
+  // },
+  // {
+  //   name: "calendar",
+  //   icon: <CalendarIcon />,
+  // },
   {
     name: "whiteboard",
     href: "/whiteboard",
