@@ -77,9 +77,6 @@ dependencies:
   typescript:
     specifier: 5.0.4
     version: 5.0.4
-  whiteboard-react:
-    specifier: ^1.0.0
-    version: 1.0.0(fabric@5.3.0)(react-colorful@5.6.1)(react-dom@18.2.0)(react@18.2.0)
 
 devDependencies:
   '@types/fabric':
@@ -3654,20 +3651,6 @@ packages:
     hasBin: true
     dependencies:
       isexe: 2.0.0
-    dev: false
-
-  /whiteboard-react@1.0.0(fabric@5.3.0)(react-colorful@5.6.1)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-BTcEG5jAhj7vtHE+8pG2jZXY9rfOL3o7mddwrIjtXoWKuMeb9qGj7JcBbAD+/24rToT1xE13zdCByJzYkjFrZg==}
-    peerDependencies:
-      fabric: '>=5.2.1'
-      react: '>=16.13.0'
-      react-colorful: '>=5.5.1'
-      react-dom: '>=16.13.0'
-    dependencies:
-      fabric: 5.3.0(encoding@0.1.13)
-      react: 18.2.0
-      react-colorful: 5.6.1(react-dom@18.2.0)(react@18.2.0)
-      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /wide-align@1.1.5:
