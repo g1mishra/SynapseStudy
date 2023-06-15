@@ -226,3 +226,40 @@ export const createChannel = async (
     ]
   );
 };
+
+// export async function getStudyRoomIf(userId: string): Promise<GetStudyRoomsResponse> {
+//   const userLinks = await appwriteSDKProvider.database.listDocuments(
+//     Server.dbId,
+//     userLinksCollectionID,
+//     [Query.equal("user_id", userId)]
+//   );
+
+//   const studyRoomIds = userLinks.documents.map((room) => room.study_room_id);
+//   if (studyRoomIds.length === 0) studyRoomIds.push("");
+
+//   return appwriteSDKProvider.database.listDocuments(Server.dbId, studyRoomsCollectionID, [
+//     Query.equal("$id", studyRoomIds),
+//   ]);
+// }
+
+// export async function getJoinRequestByUsers(
+//   userId: string
+// ): Promise<Models.DocumentList<Models.Document>> {
+//   const userLinks = await appwriteSDKProvider.database.listDocuments(
+//     Server.dbId,
+//     userLinksCollectionID,
+//     [Query.equal("user_id", userId), Query.equal("role", "owner")]
+//   );
+
+//   const studyRoomIds = userLinks.documents.map((room) => room.study_room_id);
+//   if (studyRoomIds.length === 0) studyRoomIds.push("");
+
+//   const joinRequests = await appwriteSDKProvider.database.listDocuments(Server.dbId, Server.joinRequestsCollectionId, [
+//     Query.equal("studyRoomId", studyRoomIds),
+//   ]);
+
+//   const userIds = joinRequests.documents.map((request) => request.userId);
+
+//   return appwriteSDKProvider.database.listDocuments(Server.dbId, Server.usersCollectionId, [
+
+// }
