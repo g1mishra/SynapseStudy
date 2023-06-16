@@ -1,15 +1,32 @@
 import { getChatMessagesByChannelId } from "@/lib/chatrooms.service";
-import useSWR from "swr";
+import { ChatMessage } from "@/types/chat";
+import { useEffect, useState } from "react";
 
 export function useChatMessages(channelId: string) {
-  const { data: messages, mutate: mutateMessages } = useSWR(
-    channelId ? `/chatrooms/${channelId}/messages` : null,
-    async (_) => await getChatMessagesByChannelId(channelId),
-    {
-      revalidateOnFocus: false,
-      shouldRetryOnError: false,
-    }
-  );
+  const [messages, mutateMessages] = useState<ChatMessage[]>([]);
+  const [lastId, setLastId] = useState<string>("");
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
-  return { messages, mutateMessages };
+  useEffect(() => {
+    const fetchChatMessages = async () => {
+      if (channelId) {
+        const data = await getChatMessagesByChannelId(channelId, lastId);
+        if (data.length > 0) {
+          mutateMessages((prevMessages) => [...prevMessages, ...data]);
+        }
+        setIsLoadingMore(false);
+      }
+    };
+
+    fetchChatMessages();
+  }, [channelId, lastId]);
+
+  const loadMoreMessages = (lastId: string) => {
+    if (!isLoadingMore && lastId) {
+      setIsLoadingMore(true);
+      setLastId(lastId);
+    }
+  };
+
+  return { messages, loadMoreMessages, isLoadingMore, mutateMessages };
 }

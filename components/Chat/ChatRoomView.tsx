@@ -11,20 +11,36 @@ import Loading from "../Loading";
 interface ChatRoomViewProps {
   roomInfo: ChatChannel;
   messages?: ChatMessage[] | undefined;
+  mutateMessages: any;
+  loadMoreMessages: (lasttId: string) => void;
 }
 
-export function ChatRoomView({ roomInfo, messages }: ChatRoomViewProps) {
+export function ChatRoomView({
+  roomInfo,
+  messages,
+  mutateMessages,
+  loadMoreMessages,
+}: ChatRoomViewProps) {
   const { id: studyRoomId } = useParams();
   const { currentUser, loading } = useAuth();
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const { user: participants, isLoading } = useParticipants(studyRoomId);
+
+  const handleScroll = () => {
+    const chatContainer = chatContainerRef.current;
+    if (!chatContainer) return;
+
+    if (chatContainer.scrollTop < 1 && messages && messages.length > 0) {
+      loadMoreMessages(messages[messages.length - 1].$id);
+    }
+  };
 
   useEffect(() => {
     const chatContainer = chatContainerRef.current;
     if (!chatContainer) return;
 
     chatContainer.scrollTop = chatContainer.scrollHeight;
-  }, [messages]);
+  }, []);
 
   if (isLoading || loading) {
     return <Loading />;
@@ -38,12 +54,13 @@ export function ChatRoomView({ roomInfo, messages }: ChatRoomViewProps) {
         style={{
           overflowAnchor: "none",
         }}
+        onScroll={handleScroll}
         ref={chatContainerRef}
       >
         {messages && renderChatBubbles(messages, currentUser, participants)}
       </div>
       <div className="py-4 px-6 border rounded-15">
-        <ChatRoomInput channelId={roomInfo?.$id} />
+        <ChatRoomInput channelId={roomInfo?.$id} mutateMessages={mutateMessages} />
       </div>
     </div>
   );
@@ -56,7 +73,7 @@ const renderChatBubbles = (
 ) => {
   let currentDate: string | null = null;
   let previousSenderId: string | null = null;
-  return messages.map((message, index) => {
+  return [...messages].reverse().map((message, index) => {
     let user = participants?.find((participant: any) => participant?.$id === message?.sender_id);
 
     const messageDate = new Date(message.$createdAt).toLocaleDateString();

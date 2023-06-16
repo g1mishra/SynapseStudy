@@ -10,14 +10,15 @@ import { ID, UploadProgress } from "appwrite";
 import { useCallback, useState } from "react";
 import { KeyedMutator } from "swr";
 import FileInputPreview from "./FileInputPreview";
+import { ChatMessage } from "@/types/chat";
 
 interface ChatRoomInputProps {
   channelId: string;
+  mutateMessages: KeyedMutator<ChatMessage[] | undefined>;
 }
 
 export default function ChatRoomInput(props: ChatRoomInputProps) {
-  const { channelId: channel_Id } = props;
-  const { mutateMessages } = useChatMessages(channel_Id);
+  const { channelId: channel_Id, mutateMessages } = props;
   const { mutateProgress } = useProgressBar<UploadProgress>("chat-sending");
 
   const [message, setMessage] = useState("");
@@ -52,7 +53,7 @@ export default function ChatRoomInput(props: ChatRoomInputProps) {
         });
 
         // temperory update the UI
-        mutateMessages((prev) => [...(prev ?? []), chatMessage], false);
+        mutateMessages((prev) => [chatMessage, ...(prev ?? [])], false);
         setMessage("");
         setFile(null);
 
@@ -66,6 +67,7 @@ export default function ChatRoomInput(props: ChatRoomInputProps) {
         );
         return;
       }
+      if (!message) return;
       chatMessage["status"] = "sent";
       await createChatDocument(chatMessage);
       setMessage("");
