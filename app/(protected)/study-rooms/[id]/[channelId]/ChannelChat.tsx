@@ -11,7 +11,7 @@ const Base_Event = `databases.${Server.dbId}.collections.${Server.messagesCollec
 
 export default function ChannelChat({ roomInfo }: { roomInfo: ChatChannel }) {
   const channelId = roomInfo?.$id;
-  const { messages, mutateMessages } = useChatMessages(channelId);
+  const { messages, mutateMessages, loadMoreMessages } = useChatMessages(channelId);
 
   useEffect(() => {
     const unsubscribe = appwriteSDKProvider.client.subscribe(`${Base_Event}`, (response) => {
@@ -19,12 +19,12 @@ export default function ChannelChat({ roomInfo }: { roomInfo: ChatChannel }) {
       if (response.events.includes(`${Base_Event}.*.create`)) {
         if (payload && payload.channel_Id !== channelId) return;
         mutateMessages((prev) => {
-          const index = prev?.findIndex((message) => message.$id !== payload.$id);
+          const index = prev?.findIndex((message) => message.$id === payload.$id);
           if (prev && index !== undefined && index !== -1) {
             prev[index] = payload;
             return prev;
           }
-          return [...(prev ?? []), payload];
+          return [payload, ...(prev ?? [])];
         });
       } else if (response.events.includes(`${Base_Event}.*.update`)) {
         if (payload && payload.channel_Id !== channelId) return;
@@ -33,9 +33,10 @@ export default function ChannelChat({ roomInfo }: { roomInfo: ChatChannel }) {
           const index = prev?.findIndex((message) => message.$id === payload.$id);
           if (index !== undefined && index !== -1) {
             prev[index] = payload;
+            return prev;
           }
-          return [...(prev ?? [])];
-        }, false);
+          return [payload, ...(prev ?? [])];
+        });
       } else if (response.events.includes(`${Base_Event}.*.delete`)) {
         if (payload && payload.channel_Id !== channelId) return;
         mutateMessages((prev) => {
@@ -45,12 +46,19 @@ export default function ChannelChat({ roomInfo }: { roomInfo: ChatChannel }) {
             prev.splice(index, 1);
           }
           return [...(prev ?? [])];
-        }, false);
+        });
       }
     });
     // Closes the subscription.
     () => unsubscribe();
   }, []);
 
-  return <ChatRoomView roomInfo={roomInfo} messages={messages} />;
+  return (
+    <ChatRoomView
+      roomInfo={roomInfo}
+      messages={messages}
+      mutateMessages={mutateMessages}
+      loadMoreMessages={loadMoreMessages}
+    />
+  );
 }

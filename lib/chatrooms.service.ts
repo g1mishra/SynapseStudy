@@ -15,14 +15,20 @@ export const getChannelInfo = async (channelId: string) => {
   return channelInfo;
 };
 
-export async function getChatMessagesByChannelId(channelId: string) {
-  const { documents } = await database.listDocuments<ChatMessage>(
-    Server.dbId,
-    Server.messagesCollectionId,
-    [Query.equal("channel_Id", channelId), Query.orderAsc("$updatedAt")]
-  );
+export async function getChatMessagesByChannelId(channelId: string, lastId?: string) {
+  let q = [];
+  if (lastId) {
+    q.push(Query.cursorAfter(lastId));
+  }
 
-  return documents;
+  return await (
+    await database.listDocuments<ChatMessage>(Server.dbId, Server.messagesCollectionId, [
+      Query.equal("channel_Id", channelId),
+      Query.orderDesc("$updatedAt"),
+      Query.limit(25),
+      ...q,
+    ])
+  ).documents;
 }
 
 export async function createChatDocument(payload: ChatMessageI, uniqueId = ID.unique()) {
