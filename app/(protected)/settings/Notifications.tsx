@@ -1,8 +1,9 @@
 import { useAuth } from "@/hooks/useAuth";
+import { cn } from "@/utils/utils";
 import { toast } from "react-toastify";
 import useSWR from "swr";
 
-export default function Notifications() {
+export default function Notifications({ from = "settings" }) {
   const { currentUser } = useAuth();
   const { data, isLoading, mutate } = useSWR(
     `/api/join-request/?user_id=${currentUser?.$id}`,
@@ -11,7 +12,7 @@ export default function Notifications() {
       return res.json();
     },
     {
-      revalidateOnFocus: false,
+      revalidateOnFocus: true,
       shouldRetryOnError: false,
     }
   );
@@ -88,7 +89,11 @@ export default function Notifications() {
   const userListObj = data?.data?.userListObj || {};
 
   return (
-    <div className="container mt-28 mb-10 flex flex-col justify-center items-center">
+    <div
+      className={cn("container mt-28 mb-10 flex flex-col justify-center items-center", {
+        "mt-0": from === "dashboard",
+      })}
+    >
       <div className="flex flex-col items-center w-full max-w-md">
         {isLoading ? (
           <div className="text-white">Loading...</div>
@@ -97,7 +102,7 @@ export default function Notifications() {
             return (
               <div
                 key={item?.$id}
-                className="flex flex-row justify-between gap-x-4 items-center bg-white p-4 rounded-md shadow-md"
+                className="flex flex-col sm:flex-row justify-between gap-x-4 items-center bg-white p-4 rounded-md shadow-md"
               >
                 <div className="flex flex-col">
                   <span className="text-gray-600 text-base">
@@ -106,7 +111,7 @@ export default function Notifications() {
                   </span>
                   <span className="text-gray-800 text-sm mt-1">{item?.message}</span>
                 </div>
-                <div className="flex flex-row">
+                <div className="flex flex-row mt-2 sm:mt-0">
                   <button
                     onClick={() => handleAccept(item)}
                     className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"
@@ -124,7 +129,7 @@ export default function Notifications() {
             );
           })
         )}
-        {!isLoading && joinRequests?.length === 0 && (
+        {!isLoading && joinRequests?.length === 0 && from !== "dashboard" && (
           <div className="text-white">No pending requests</div>
         )}
       </div>
