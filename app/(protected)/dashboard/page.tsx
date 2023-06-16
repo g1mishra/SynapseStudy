@@ -16,6 +16,7 @@ import dynamic from "next/dynamic";
 import { useCallback, useState } from "react";
 import { toast } from "react-toastify";
 import Header from "../Header";
+import Notifications from "../settings/Notifications";
 
 const CreateStudyRoomModal = dynamic(() => import("@/components/Modal/CreateStudyRoomModal"));
 
@@ -67,8 +68,8 @@ export default function Dashboard() {
         </div>
 
         {/* right */}
-        <div className="w-full md:w-1/2 flex flex-col md:items-end min-h-[170px]">
-          <div className="sm:flex-1 w-full md:max-w-md h-52 rounded-lg bg-bayoux relative overflow-hidden">
+        <div className="w-full md:w-1/2 flex flex-col md:items-end ">
+          <div className="sm:flex-1 shrink-0 w-full md:max-w-md h-52 min-h-[170px] rounded-lg bg-bayoux relative overflow-hidden">
             <BackgroundCurveSvg className="absolute -left-14  h-60 -top-4 w-auto" />
             <div className="absolute flex items-center left-6 inset-y-0 ">
               <Clock />
@@ -87,6 +88,9 @@ export default function Dashboard() {
           onCreateChatRoom={_createStudyRoom}
           sucessfulCreation={successfullyCreated}
         />
+      </div>
+      <div className="w-full mt-6 max-w-md ml-auto">
+        <Notifications from="dashboard" />
       </div>
     </div>
   );

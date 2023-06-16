@@ -54,7 +54,12 @@ function GeneralTabComponent() {
       <div className="flex flex-col items-center">
         <div className="mt-10">
           <label htmlFor="avatar">
-            <Avatar imageSrc={currentUser?.prefs?.image} className="w-28 h-28 shrink-0" />
+            <Avatar
+              imageSrc={currentUser?.prefs?.image}
+              width={200}
+              height={200}
+              className="w-28 h-28 shrink-0"
+            />
           </label>
           <input
             type="file"
@@ -67,7 +72,7 @@ function GeneralTabComponent() {
         <div className="w-full flex flex-col gap-y-4">
           <div className="mt-4">
             <label
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-white"
               htmlFor="inline-full-email"
             >
               Email
@@ -83,10 +88,7 @@ function GeneralTabComponent() {
           </div>
 
           <div className="mt-4">
-            <label
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              htmlFor="inline-full-name"
-            >
+            <label className="block mb-2 text-sm font-medium text-white" htmlFor="inline-full-name">
               Name
             </label>
             <input
@@ -140,10 +142,7 @@ const SecurityTabComponent = () => {
     <div className="w-full max-w-md mx-auto px-6 mt-12">
       <form className="pt-6 pb-8 mb-4">
         <div className=" mb-6">
-          <label
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            htmlFor="old-password"
-          >
+          <label className="block mb-2 text-sm font-medium text-white" htmlFor="old-password">
             Current Password
           </label>
           <input
@@ -156,10 +155,7 @@ const SecurityTabComponent = () => {
           />
         </div>
         <div className=" mb-6">
-          <label
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            htmlFor="new-password"
-          >
+          <label className="block mb-2 text-sm font-medium text-white" htmlFor="new-password">
             New Password
           </label>
           <input
@@ -172,10 +168,7 @@ const SecurityTabComponent = () => {
           />
         </div>
         <div className=" mb-6">
-          <label
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            htmlFor="confirm-password"
-          >
+          <label className="block mb-2 text-sm font-medium text-white" htmlFor="confirm-password">
             Confirm Password
           </label>
           <input
